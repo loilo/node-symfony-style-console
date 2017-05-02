@@ -1,0 +1,43 @@
+{
+  "name": "symfony-style-console",
+  "description": "Use the style and utilities of the Symfony Console in Node.js",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test",
+    "src": "src"
+  },
+  "scripts": {
+    "build": "tsc --declaration",
+    "build-modern": "tsc --declaration --target ES2015 --module ES6 --outDir modern",
+    "build-docs": "typedoc --name 'Symfony Style Console' --module commonjs --target ES5 --out ./docs ./src/index.ts",
+    "pretest": "npm run build",
+    "prepublishOnly": "npm test && npm run build-modern",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.14",
+    "jest": "^19.0.2",
+    "typedoc": "^0.6.0",
+    "typescript": "^2.2.2",
+    "typescript-standard": "^0.3.30"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Loilo/node-symfony-style-console.git"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "keywords": [
+    "symfony",
+    "style",
+    "console"
+  ],
+  "author": "Florian Reuschel <florian@loilo.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Loilo/node-symfony-style-console/issues"
+  },
+  "homepage": "https://github.com/Loilo/node-symfony-style-console#readme"
+}
