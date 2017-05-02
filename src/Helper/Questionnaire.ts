@@ -6,7 +6,7 @@ let readline: any
 /**
  * The options that go into a `doAsk` call.
  */
-interface QuestionnaireOptions {
+export interface QuestionnaireOptions {
 	/**
 	 * The question string to show. May contain styles.
 	 */
