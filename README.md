@@ -215,14 +215,15 @@ const {
   VERBOSITY_VERY_VERBOSE,
   VERBOSITY_DEBUG
 } = require('symfony-style-console')
-const io = new ssc.SymfonyStyle()
+
+const io = new SymfonyStyle()
 
 const flagMap = {
-  '-q': ssc.VERBOSITY_QUIET,
-  '--quiet': ssc.VERBOSITY_QUIET,
-  '-v': ssc.VERBOSITY_VERBOSE,
-  '-vv': ssc.VERBOSITY_VERY_VERBOSE,
-  '-vvv': ssc.VERBOSITY_DEBUG
+  '-q': VERBOSITY_QUIET,
+  '--quiet': VERBOSITY_QUIET,
+  '-v': VERBOSITY_VERBOSE,
+  '-vv': VERBOSITY_VERY_VERBOSE,
+  '-vvv': VERBOSITY_DEBUG
 }
 
 const argv = process.argv.slice(2)
