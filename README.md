@@ -29,13 +29,13 @@ Then, pull the `SymfonyStyle` class from the package and instantiate it:
 const { SymfonyStyle } = require('symfony-style-console')
 
 // Or the more verbose way, in case you use Node.js v4:
-// const SymfonyStyle = require('symfony-style-console').SymfonyStyle
+const SymfonyStyle = require('symfony-style-console').SymfonyStyle
 
 const io = new SymfonyStyle()
 ```
 
 ### `import`/`export`
-Since ES modules are coming [to more and more engines](http://caniuse.com/#feat=es6-module), this modules offers an alternative build using ES2015 modules.
+Since ES modules are coming [to more and more engines](http://caniuse.com/#feat=es6-module), this package offers an alternative build using ES2015 modules.
 
 You can use it like this (note that you'll currently still need a Babel-like build chain to resolve those modules):
 
@@ -60,10 +60,12 @@ io.section('Subsection title')
 
 // The plain old `writeln` method. Does what you'd expect it to do.
 io.writeln([
-	'Just write some text.',
-	'You might, just like in this example, provide an array of strings to put multiple things.',
-	'But you don\'t have to. A simple string will suffice.',
-	'Same goes for the write(), text(), block(), comment(), success(), caution(), warning() and error() methods.'
+  'Just write some text.',
+  'You might, just like in this example, provide an array of\n\
+strings to put multiple things.',
+  'But you don\'t have to. A simple string will suffice.',
+  'Same goes for the write(), text(), block(), comment(),\n\
+success(), caution(), warning() and error() methods.'
 ])
 
 // Equivalent to `writeln`, but doesn't put a line break after
@@ -79,17 +81,19 @@ io.newLine(2)
 // `text` blocks get indented by one character.
 io.text('This gets indented by one character.')
 
-// `comment` blocks are also indented and preceded by a double slash "//"
+// `comment` blocks are also indented and preceded
+// by a double slash "//"
 io.comment('In case you need additional information.')
 
 // `block` serves to group content, with a certain styling.
 io.block([
-	'This gets indented as well.',
-	'Use this to indent a bunch of text next to a keyword.'
+  'This gets indented as well.',
+  'Use this to indent a bunch of text next to a keyword.'
 ], 'INFO', 'fg=black;bg=blue', ' i ', true)
 
-// `success`, `warning`, `caution` and `error` are really just
-// predefined `block` statements. Doesn't make them less useful though.
+// `success`, `warning`, `caution` and `error` are really
+// just predefined `block` statements.
+// Doesn't make them less useful though.
 io.success('You\'ve done this correctly.')
 io.warning('Be aware of this problem.')
 io.caution('I really need some attention!')
@@ -98,9 +102,10 @@ io.error('This somehow went wrong.')
 
 // Questions
 
-// Please do gently ignore the fact that I haven't added an `async` wrapper function
-// to the following methods. I just wanted to omit the visual noise.
-// Also note that async/await is only available in Node.js 7.6 and above.
+// Please do gently ignore the fact that I haven't added
+// an `async` wrapper function to the following methods.
+// I just wanted to omit the visual noise. Also note that
+// async/await is only available in Node.js 7.6 and above.
 
 // Ask for strings
 const name = await io.ask('Give me a name!', 'John Smith')
@@ -110,9 +115,9 @@ const passwd = await io.askHidden('Give me a password!')
 
 // Ask for picking from a collection
 const language = await io.choice('Pick a language!', {
-	php: 'PHP',
-	js: 'JavaScript',
-	other: 'Other'
+  php: 'PHP',
+  js: 'JavaScript',
+  other: 'Other'
 })
 
 // Ask for confirmation
@@ -133,7 +138,7 @@ io.progressSet(3)
 io.progressFinish()
 ```
 
-Look at this beautiful terminal.
+A screenshot of the result is below. Look at this beautiful terminal.
 
 ![Comprehensive example output](symf-example.png)
 
@@ -143,19 +148,24 @@ Look at this beautiful terminal.
 You can set the verbosity of the `io` instance to only print what you need:
 
 ```javascript
-const ssc = require('symfony-style-console')
+const {
+  SymfonyStyle,
+  VERBOSITY_NORMAL,
+  VERBOSITY_VERBOSE,
+  VERBOSITY_DEBUG
+} = require('symfony-style-console')
 
-// Default verbosity is ssc.VERBOSITY_NORMAL...
-const io = new ssc.SymfonyStyle()
+// Default verbosity is VERBOSITY_NORMAL...
+const io = new SymfonyStyle()
 
 // ...so this won't be printed:
-io.writeln('This is a more verbose message', ssc.VERBOSITY_VERBOSE)
+io.writeln('This is a more verbose message', VERBOSITY_VERBOSE)
 
 // Set the verbosity real high
-io.setVerbosity(ssc.VERBOSITY_DEBUG)
+io.setVerbosity(VERBOSITY_DEBUG)
 
 // Now the same message will suddenly appear:
-io.writeln('This is a more verbose message', ssc.VERBOSITY_VERBOSE)
+io.writeln('This is a more verbose message', VERBOSITY_VERBOSE)
 ```
 
 The available verbosity options are (in this order, from least to most verbose):
@@ -166,15 +176,45 @@ The available verbosity options are (in this order, from least to most verbose):
 * `VERBOSITY_VERY_VERBOSE`
 * `VERBOSITY_DEBUG`
 
+##### Using verbosity programmatically
+
+Note that the verbosity options are only available on the `write()` and `writeln()` methods.
+
+However, those `VERBOSITY_*` constants are just numbers and you can compare them as you need:
+
+```javascript
+// Verbosity setting is at least VERBOSITY_VERBOSE
+if (io.getVerbosity() > VERBOSITY_NORMAL) {
+  io.success('You have a verbose console!')
+}
+```
+
+Or to make that even more comfortable, use the builtin methods:
+```javascript
+// Checks if output is completely turned off
+io.isQuiet()
+
+// The following do always read as "is AT LEAST ****"
+io.isVerbose()
+io.isVeryVerbose()
+io.isDebug()
+```
+
 ##### Setting verbosity via command line flags
 Symfony itself ties those verbosity levels to certain command line flags (`-q`, `-v`, `-vv` and `-vvv`).
 
 This package does not aim to be a CLI framework though, so if you want to use those flags, you'd have to bind them to the verbosity manually.
 
-The following code would mimick Symfony's behaviour:
+The following code would mimic Symfony's behaviour:
 
 ```javascript
-const ssc = require('symfony-style-console')
+const {
+  SymfonyStyle,
+  VERBOSITY_QUIET,
+  VERBOSITY_VERBOSE,
+  VERBOSITY_VERY_VERBOSE,
+  VERBOSITY_DEBUG
+} = require('symfony-style-console')
 const io = new ssc.SymfonyStyle()
 
 const flagMap = {
@@ -201,15 +241,34 @@ You can style your console output in a markup-like fashion:
 io.writeln('This is <fg=blue>blue</> text!')
 ```
 
-Styles can be a combination of foreground (`fg`) and background color (`bg`) as well as a comma-separated list of additional options.
+Styles can be a combination of foreground (`fg`) and background color (`bg`) as well as a comma-separated list of additional `options`.
 
 Want a fully fledged example? Observe:
 
 ```javascript
-io.writeln('Get a crazy style: <fg=green;bg=magenta;options=underscore,bold>Yeah!</>')
+io.writeln([
+  'Give it a crazy style:'
+  '<fg=green;bg=magenta;options=underscore,bold>Yeah!</>'
+])
 ```
 
-You can of course nest those stylings.
+Note that you can nest stylings, but nested styling markup will not inherit parent styles.
+
+The following code block does explain what that means:
+
+```javascript
+// Style the phrase: "This text is green with an underlined word."
+io.write([
+  // This part is green
+  '<fg=green>This text is green with an ',
+
+  // This part is underlined but not green
+  '<options=underscore>underlined</>',
+
+  // This part is green again
+  ' word.</>'
+])
+```
 
 ##### Colors
 The following colors are available: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white` and `default`
