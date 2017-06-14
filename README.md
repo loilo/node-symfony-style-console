@@ -8,7 +8,7 @@ Use the style and utilities of the [Symfony Console](https://symfony.com/doc/cur
 Since *Symfony* is, for good reason, a registered trademark, please take note that I'm in no way associated with [the Symfony brand](https://symfony.com/) or the [SensioLabs](https://sensiolabs.com/) organization. Therefore I don't represent or speak for any of them.
 
 ## Reasoning
-While developing a PHP project using the *Symfony* framework, I found myself in the need of writing some Composer `post-install-command` scripts in Node.js.
+While developing a PHP project using the *Symfony* framework, I found myself in the need of writing some Composer `post-install-cmd` scripts in Node.js.
 
 Sadly, they did not visually align to the output from PHP which was using the `Symfony\Component\Console\Style\SymfonyStyle` class. So I decided to port that class and its environment to [TypeScript](https://typescriptlang.org) to be able to use that style in Node.js.
 
