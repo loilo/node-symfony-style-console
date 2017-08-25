@@ -1,7 +1,7 @@
 {
   "name": "symfony-style-console",
   "description": "Use the style and utilities of the Symfony Console in Node.js",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "directories": {
     "test": "test",
