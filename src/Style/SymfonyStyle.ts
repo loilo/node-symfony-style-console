@@ -290,7 +290,7 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * @return ProgressBar
    */
-  private getProgressBar () {
+  protected getProgressBar () {
     if (!this.progressBar) {
       throw new Error('The ProgressBar is not started.')
     }
@@ -298,7 +298,7 @@ export default class SymfonyStyle extends OutputStyle {
     return this.progressBar;
   }
 
-  private autoPrependBlock () {
+  protected autoPrependBlock () {
     const chars = this.bufferedOutput.fetch()
       .replace(new RegExp(EOL, 'g'), '\n')
       .slice(-2)
@@ -311,7 +311,7 @@ export default class SymfonyStyle extends OutputStyle {
     this.newLine(2 - (countOccurences(chars, '\n') || 0))
   }
 
-  private autoPrependText () {
+  protected autoPrependText () {
     const fetched = this.bufferedOutput.fetch()
 
     // Prepend new line if last char isn't EOL:
@@ -320,7 +320,7 @@ export default class SymfonyStyle extends OutputStyle {
     }
   }
 
-  private reduceBuffer (messages: string|string[]) {
+  protected reduceBuffer (messages: string|string[]) {
     if (!Array.isArray(messages)) messages = [ messages ]
 
     // We need to know if the two last chars are EOL
@@ -330,7 +330,7 @@ export default class SymfonyStyle extends OutputStyle {
       .map(value => value.slice(-4))
   }
 
-  private createBlock (
+  protected createBlock (
     messages: string[],
     type: string = null,
     style: string = null,
@@ -392,7 +392,7 @@ export default class SymfonyStyle extends OutputStyle {
     return lines
   }
 
-  private initQuestionnaire () {
+  protected initQuestionnaire () {
     if (!this.questionnaire) {
       this.questionnaire = new Questionnaire(this)
     }

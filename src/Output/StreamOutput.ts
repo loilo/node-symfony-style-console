@@ -89,7 +89,7 @@ export default class StreamOutput extends Output {
       const os = require('os')
 
       return '10.0.10586' === os.release()
-        || false !== process.env.ANSICON
+        || process.env.ANSICON
         || 'ON' === process.env.ConEmuANSI
         || 'xterm' === process.env.TERM
     }
