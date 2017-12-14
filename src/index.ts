@@ -11,13 +11,15 @@ import {
 
 import SymfonyStyle from './Style/SymfonyStyle'
 
-import ConsoleOutput from './Output/ConsoleOutput'
 import StreamOutput from './Output/StreamOutput'
+import BufferedOutput from './Output/BufferedOutput'
+import ConsoleOutput from './Output/ConsoleOutput'
 import Table from './Helper/Table'
 import TableCell from './Helper/TableCell'
 import TableStyle from './Helper/TableStyle'
 
 export { StreamOutput }
+export { BufferedOutput }
 export { ConsoleOutput }
 export { TableCell, TableStyle, Table }
 
