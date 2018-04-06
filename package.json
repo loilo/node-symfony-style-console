@@ -16,11 +16,11 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/node": "^8.0.25",
-    "jest": "^20.0.4",
-    "typedoc": "^0.8.0",
-    "typescript": "^2.5.1",
-    "typescript-standard": "^0.3.30"
+    "@types/node": "^9.6.2",
+    "jest": "^22.4.3",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.1",
+    "typescript-standard": "^0.3.36"
   },
   "repository": {
     "type": "git",
