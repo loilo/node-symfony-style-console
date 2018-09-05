@@ -6,7 +6,8 @@ import {
   VERBOSITY_NORMAL,
   VERBOSITY_VERBOSE,
   VERBOSITY_VERY_VERBOSE,
-  VERBOSITY_DEBUG
+  VERBOSITY_DEBUG,
+  VERBOSITY_LEVEL
 } from './Output/OutputInterface'
 
 import SymfonyStyle from './Style/SymfonyStyle'
@@ -32,5 +33,6 @@ export {
   VERBOSITY_VERBOSE,
   VERBOSITY_VERY_VERBOSE,
   VERBOSITY_DEBUG,
+  VERBOSITY_LEVEL,
   SymfonyStyle
 }
