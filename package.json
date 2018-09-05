@@ -27,7 +27,7 @@
     "url": "git+https://github.com/Loilo/node-symfony-style-console.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "keywords": [
     "symfony",
