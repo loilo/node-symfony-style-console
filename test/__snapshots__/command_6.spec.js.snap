@@ -5,7 +5,7 @@ exports[`06 Ensure has proper blank line after text block when using a block lik
  * Lorem ipsum dolor sit amet
  * consectetur adipiscing elit
 
- [OK] Lorem ipsum dolor sit amet                                                                                        
+ [OK] Lorem ipsum dolor sit amet                                                
 
 "
 `;

@@ -2,7 +2,7 @@
 
 exports[`00 Ensure has single blank line at start when using block element 1`] = `
 "
- ! [CAUTION] Lorem ipsum dolor sit amet                                                                                 
+ ! [CAUTION] Lorem ipsum dolor sit amet                                         
 
 "
 `;

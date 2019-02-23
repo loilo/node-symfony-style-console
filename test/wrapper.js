@@ -18,6 +18,8 @@ class TestStream extends Writable {
  */
 module.exports = test => () => {
 	const output = new ConsoleOutput(VERBOSITY_NORMAL, new TestStream)
+
+	SymfonyStyle.LINE_LENGTH = 80
 	const io = new SymfonyStyle(undefined, output)
 	io.setDecorated(false)
 	test(io)

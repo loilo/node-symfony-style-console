@@ -18,6 +18,7 @@ import OutputFormatter from '../Formatter/OutputFormatter'
 import OutputStyle from './OutputStyle'
 
 export default class SymfonyStyle extends OutputStyle {
+  public static LINE_LENGTH = 0
   public static MAX_LINE_LENGTH = 120
 
   private input: InputInterface
@@ -32,7 +33,7 @@ export default class SymfonyStyle extends OutputStyle {
     this.input = input
     this.bufferedOutput = new BufferedOutput(output.getVerbosity(), false, output.getFormatter().clone())
 
-    const width = ((<any>process.stdout).columns) || SymfonyStyle.MAX_LINE_LENGTH
+    const width = (SymfonyStyle.LINE_LENGTH || (<any>process.stdout).columns) || SymfonyStyle.MAX_LINE_LENGTH
     this.lineLength = Math.min(
       width - Number(DIRECTORY_SEPARATOR === '\\'),
       SymfonyStyle.MAX_LINE_LENGTH
