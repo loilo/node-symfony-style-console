@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`02 Ensure has single blank line between blocks 1`] = `
+"
+ [WARNING] Warning                                                                                                      
+
+ ! [CAUTION] Caution                                                                                                    
+
+ [ERROR] Error                                                                                                          
+
+ [OK] Success                                                                                                           
+
+ ! [NOTE] Note                                                                                                          
+
+X [CUSTOM] Custom block                                                                                                 
+
+"
+`;

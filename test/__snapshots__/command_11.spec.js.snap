@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`11 Ensure long words are properly wrapped in blocks 1`] = `
+"
+ § [CUSTOM] Lopadotemachoselachogaleokranioleipsanodrimhypotrimmatosilphioparaomelitokatakechymenokichlepikossyphophatto
+ §          peristeralektryonoptekephalliokigklopeleiolagoiosiraiobaphetraganopterygon                                  
+
+"
+`;

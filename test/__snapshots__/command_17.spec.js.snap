@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`17 Ensure symfony style helper methods handle trailing backslashes properly when decorating user texts 1`] = `
+"
+Title ending with \\\\
+===================
+
+Section ending with \\\\
+---------------------
+
+"
+`;

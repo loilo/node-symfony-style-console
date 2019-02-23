@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`01 Ensure has single blank line between titles and blocks 1`] = `
+"
+Title
+=====
+
+ [WARNING] Lorem ipsum dolor sit amet                                                                                   
+
+Title
+=====
+
+"
+`;

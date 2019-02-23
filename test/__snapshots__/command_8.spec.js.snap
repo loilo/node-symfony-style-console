@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`08 Ensure formatting tables when using multiple headers with TableCell 1`] = `
+" ---------------- --------------- --------------------- 
+  Main table title                                      
+ ---------------- --------------- --------------------- 
+  ISBN             Title           Author               
+ ---------------- --------------- --------------------- 
+  978-0521567817   De Monarchia    Dante Alighieri      
+  978-0804169127   Divine Comedy   spans multiple rows  
+ ---------------- --------------- --------------------- 
+
+"
+`;
