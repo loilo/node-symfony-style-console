@@ -4,13 +4,13 @@ import Output from './Output'
 
 /**
  * An [[OutputInterface]] that buffers its written messages.
- * 
+ *
  * @author Jean-François Simon <contact@jfsimon.fr>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
  */
 export default class BufferedOutput extends Output {
@@ -21,7 +21,7 @@ export default class BufferedOutput extends Output {
    *
    * @return string
    */
-  public fetch () {
+  public fetch() {
     const content = this.buffer
     this.buffer = ''
 
@@ -31,7 +31,7 @@ export default class BufferedOutput extends Output {
   /**
    * {@inheritdoc}
    */
-  protected doWrite (message: string, newline: boolean) {
+  protected doWrite(message: string, newline: boolean) {
     this.buffer += message
     if (newline) this.buffer += EOL
   }

@@ -19,11 +19,11 @@ import { EOL, DIRECTORY_SEPARATOR } from '../env'
  * ```
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel
- * 
+ *
  * Port to TypeScript
  */
 export default class StreamOutput extends Output {
@@ -39,7 +39,7 @@ export default class StreamOutput extends Output {
    *
    * @throws InvalidArgumentException When first argument is not a real stream
    */
-  public constructor (
+  public constructor(
     stream: NodeJS.WritableStream,
     verbosity: VERBOSITY_LEVEL = VERBOSITY_NORMAL,
     decorated: boolean = null,
@@ -59,16 +59,18 @@ export default class StreamOutput extends Output {
    *
    * @return A stream resource
    */
-  public getStream () {
+  public getStream() {
     return this.stream
   }
 
   /**
    * {@inheritdoc}
    */
-  protected doWrite (message: string, newline: boolean) {
-
-    if (false === this.stream.write(message) || (newline && (false === this.stream.write(EOL)))) {
+  protected doWrite(message: string, newline: boolean) {
+    if (
+      false === this.stream.write(message) ||
+      (newline && false === this.stream.write(EOL))
+    ) {
       // should never happen
       throw new Error('Unable to write output.')
     }
@@ -84,14 +86,16 @@ export default class StreamOutput extends Output {
    *
    * @return bool true if the stream supports colorization, false otherwise
    */
-  protected hasColorSupport () {
+  protected hasColorSupport() {
     if (DIRECTORY_SEPARATOR === '\\') {
       const os = require('os')
 
-      return '10.0.10586' === os.release()
-        || process.env.ANSICON
-        || 'ON' === process.env.ConEmuANSI
-        || 'xterm' === process.env.TERM
+      return (
+        '10.0.10586' === os.release() ||
+        process.env.ANSICON ||
+        'ON' === process.env.ConEmuANSI ||
+        'xterm' === process.env.TERM
+      )
     }
 
     if (typeof (this.stream as any).fd !== 'undefined') {

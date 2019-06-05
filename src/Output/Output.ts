@@ -3,7 +3,6 @@ import OutputFormatterInterface from '../Formatter/OutputFormatterInterface'
 import OutputInterface, {
   OutputOptions,
   VERBOSITY_LEVEL,
-  
   VERBOSITY_QUIET,
   VERBOSITY_NORMAL,
   VERBOSITY_VERBOSE,
@@ -28,18 +27,18 @@ import { stripTags } from '../Helper/Helper'
  *  * quiet: `-q` (no output)
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
  */
 abstract class Output implements OutputInterface {
   private formatter: OutputFormatterInterface
   private verbosity: VERBOSITY_LEVEL
 
-  public constructor (
+  public constructor(
     verbosity: VERBOSITY_LEVEL = VERBOSITY_NORMAL,
     decorated: boolean = false,
     formatter: OutputFormatterInterface = null
@@ -54,7 +53,7 @@ abstract class Output implements OutputInterface {
    *
    * @param decorated Whether to decorate the messages
    */
-  public setDecorated (decorated: boolean) {
+  public setDecorated(decorated: boolean) {
     this.formatter.setDecorated(decorated)
   }
 
@@ -63,7 +62,7 @@ abstract class Output implements OutputInterface {
    *
    * @return boolean true if the output will decorate messages, false otherwise
    */
-  public isDecorated () {
+  public isDecorated() {
     return this.formatter.isDecorated()
   }
 
@@ -72,14 +71,14 @@ abstract class Output implements OutputInterface {
    *
    * @param formatter
    */
-  public setFormatter (formatter: OutputFormatterInterface) {
+  public setFormatter(formatter: OutputFormatterInterface) {
     this.formatter = formatter
   }
 
   /**
    * Returns current output formatter instance.
    */
-  public getFormatter () {
+  public getFormatter() {
     return this.formatter
   }
 
@@ -88,7 +87,7 @@ abstract class Output implements OutputInterface {
    *
    * @param number level The level of verbosity (one of the VERBOSITY constants)
    */
-  public setVerbosity (level: VERBOSITY_LEVEL) {
+  public setVerbosity(level: VERBOSITY_LEVEL) {
     this.verbosity = level
   }
 
@@ -97,7 +96,7 @@ abstract class Output implements OutputInterface {
    *
    * @return number The current level of verbosity (one of the VERBOSITY constants)
    */
-  public getVerbosity () {
+  public getVerbosity() {
     return this.verbosity
   }
 
@@ -106,7 +105,7 @@ abstract class Output implements OutputInterface {
    *
    * @return bool true if verbosity is set to VERBOSITY_QUIET, false otherwise
    */
-  public isQuiet () {
+  public isQuiet() {
     return VERBOSITY_QUIET === this.verbosity
   }
 
@@ -115,7 +114,7 @@ abstract class Output implements OutputInterface {
    *
    * @return bool true if verbosity is set to VERBOSITY_VERBOSE, false otherwise
    */
-  public isVerbose () {
+  public isVerbose() {
     return VERBOSITY_VERBOSE === this.verbosity
   }
 
@@ -124,7 +123,7 @@ abstract class Output implements OutputInterface {
    *
    * @return bool true if verbosity is set to VERBOSITY_VERY_VERBOSE, false otherwise
    */
-  public isVeryVerbose () {
+  public isVeryVerbose() {
     return VERBOSITY_VERY_VERBOSE === this.verbosity
   }
 
@@ -133,7 +132,7 @@ abstract class Output implements OutputInterface {
    *
    * @return bool true if verbosity is set to VERBOSITY_DEBUG, false otherwise
    */
-  public isDebug () {
+  public isDebug() {
     return VERBOSITY_DEBUG === this.verbosity
   }
 
@@ -144,7 +143,10 @@ abstract class Output implements OutputInterface {
    * @param options  A bitmask of options (one of the OUTPUT or VERBOSITY constants),
    * 0 is considered the same as OUTPUT_NORMAL | VERBOSITY_NORMAL
    */
-  public writeln (messages: string|string[], options: OutputOptions = OUTPUT_NORMAL) {
+  public writeln(
+    messages: string | string[],
+    options: OutputOptions = OUTPUT_NORMAL
+  ) {
     this.write(messages, true, options)
   }
 
@@ -156,22 +158,23 @@ abstract class Output implements OutputInterface {
    * @param options  A bitmask of options (one of the OUTPUT or VERBOSITY constants),
    * 0 is considered the same as OUTPUT_NORMAL | VERBOSITY_NORMAL
    */
-  public write (
-    messages: string|string[],
+  public write(
+    messages: string | string[],
     newline: boolean = false,
     options: OutputOptions = OUTPUT_NORMAL
-   ) {
+  ) {
     if (!Array.isArray(messages)) messages = [messages]
 
     const types = OUTPUT_NORMAL | OUTPUT_RAW | OUTPUT_PLAIN
-    const type = (types & options) || OUTPUT_NORMAL
+    const type = types & options || OUTPUT_NORMAL
 
-    const verbosities = VERBOSITY_QUIET |
+    const verbosities =
+      VERBOSITY_QUIET |
       VERBOSITY_NORMAL |
       VERBOSITY_VERBOSE |
       VERBOSITY_VERY_VERBOSE |
       VERBOSITY_DEBUG
-    const verbosity = (verbosities & options) || VERBOSITY_NORMAL
+    const verbosity = verbosities & options || VERBOSITY_NORMAL
 
     if (verbosity > this.getVerbosity()) {
       return
@@ -201,7 +204,7 @@ abstract class Output implements OutputInterface {
    * @param message A message to write to the output
    * @param newline Whether to add a newline or not
    */
-  protected abstract doWrite (message: string, newline: boolean): void
+  protected abstract doWrite(message: string, newline: boolean): void
 }
 
 export default Output

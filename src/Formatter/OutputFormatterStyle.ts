@@ -12,7 +12,16 @@ export interface AnsiCodeConfig {
 /**
  * Available color names
  */
-export type ColorName = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'default'
+export type ColorName =
+  | 'black'
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'blue'
+  | 'magenta'
+  | 'cyan'
+  | 'white'
+  | 'default'
 
 /**
  * Represents an object literal with [[ColorName]] keys and [[AnsiCodeConfig]] values.
@@ -20,9 +29,15 @@ export type ColorName = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta
 export type StyleColorSet = { [key in ColorName]: AnsiCodeConfig }
 
 /**
-* Available style options
-*/
-export type OptionName = 'bold' | 'underscore' | 'blink' | 'reverse' | 'dim' | 'conceal'
+ * Available style options
+ */
+export type OptionName =
+  | 'bold'
+  | 'underscore'
+  | 'blink'
+  | 'reverse'
+  | 'dim'
+  | 'conceal'
 
 /**
  * Represents an object literal with [[OptionName]] keys and [[AnsiCodeConfig]] values.
@@ -36,14 +51,15 @@ export type StyleSet = StyleColorSet | StyleOptionsSet
 
 /**
  * Formatter style class for defining styles.
- * 
- * 
+ *
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
- * 
+ *
  */
-export default class OutputFormatterStyle implements OutputFormatterStyleInterface {
+export default class OutputFormatterStyle
+  implements OutputFormatterStyleInterface {
   /**
    * The ANSI escape sequences for available foreground colors.
    */
@@ -108,7 +124,11 @@ export default class OutputFormatterStyle implements OutputFormatterStyleInterfa
    * @param background The style background color name
    * @param options    The style options
    */
-  public constructor (foreground: ColorName = null, background: ColorName = null, options: OptionName[] = []) {
+  public constructor(
+    foreground: ColorName = null,
+    background: ColorName = null,
+    options: OptionName[] = []
+  ) {
     if (null !== foreground) {
       this.setForeground(foreground)
     }
@@ -128,7 +148,7 @@ export default class OutputFormatterStyle implements OutputFormatterStyleInterfa
    *
    * @throws `ReferenceError` if the color name is not available
    */
-  public setForeground (color: ColorName = null) {
+  public setForeground(color: ColorName = null) {
     if (null === color) {
       this.foreground = null
 
@@ -137,7 +157,9 @@ export default class OutputFormatterStyle implements OutputFormatterStyleInterfa
 
     if (!OutputFormatterStyle.availableForegroundColors[color]) {
       throw new ReferenceError(`Invalid foreground color specified: "${color}". \
-Expected one of (${Object.keys(OutputFormatterStyle.availableForegroundColors).join(', ')})`)
+Expected one of (${Object.keys(
+        OutputFormatterStyle.availableForegroundColors
+      ).join(', ')})`)
     }
 
     this.foreground = OutputFormatterStyle.availableForegroundColors[color]
@@ -150,7 +172,7 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableForegroundColors).j
    *
    * @throws `ReferenceError` if the color name is not available
    */
-  public setBackground (color: ColorName = null) {
+  public setBackground(color: ColorName = null) {
     if (null === color) {
       this.background = null
 
@@ -159,7 +181,9 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableForegroundColors).j
 
     if (!OutputFormatterStyle.availableBackgroundColors[color]) {
       throw new ReferenceError(`Invalid background color specified: "${color}". \
-Expected one of (${Object.keys(OutputFormatterStyle.availableBackgroundColors).join(', ')})`)
+Expected one of (${Object.keys(
+        OutputFormatterStyle.availableBackgroundColors
+      ).join(', ')})`)
     }
 
     this.background = OutputFormatterStyle.availableBackgroundColors[color]
@@ -172,14 +196,18 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableBackgroundColors).j
    *
    * @throws `ReferenceError` if the option name is not available
    */
-  public setOption (option: OptionName) {
+  public setOption(option: OptionName) {
     if (!OutputFormatterStyle.availableOptions[option]) {
       throw new ReferenceError(`Invalid option specified: "${option}". \
-Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(', ')})`)
+Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(
+        ', '
+      )})`)
     }
 
-    if (!arrContains(this.options, OutputFormatterStyle.availableOptions[option])) {
-      this.options.push(OutputFormatterStyle.availableOptions[option]);
+    if (
+      !arrContains(this.options, OutputFormatterStyle.availableOptions[option])
+    ) {
+      this.options.push(OutputFormatterStyle.availableOptions[option])
     }
   }
 
@@ -190,13 +218,17 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(', ')
    *
    * @throws `ReferenceError` if the option name is not available
    */
-  public unsetOption (option: OptionName) {
+  public unsetOption(option: OptionName) {
     if (!OutputFormatterStyle.availableOptions[option]) {
       throw new ReferenceError(`Invalid option specified: "${option}". \
-Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(', ')})`)
+Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(
+        ', '
+      )})`)
     }
 
-    this.options = this.options.filter(setOption => setOption !== OutputFormatterStyle.availableOptions[option])
+    this.options = this.options.filter(
+      setOption => setOption !== OutputFormatterStyle.availableOptions[option]
+    )
   }
 
   /**
@@ -204,7 +236,7 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(', ')
    *
    * @param The style options to enable
    */
-  public setOptions (options: OptionName[]) {
+  public setOptions(options: OptionName[]) {
     this.options = []
 
     for (const option of options) {
@@ -218,7 +250,7 @@ Expected one of (${Object.keys(OutputFormatterStyle.availableOptions).join(', ')
    * @param The text to style
    * @return The formatted text
    */
-  public apply (text: string) {
+  public apply(text: string) {
     const setCodes = []
     const unsetCodes = []
 

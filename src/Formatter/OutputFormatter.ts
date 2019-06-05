@@ -1,4 +1,7 @@
-import OutputFormatterStyle, { ColorName, OptionName } from './OutputFormatterStyle'
+import OutputFormatterStyle, {
+  ColorName,
+  OptionName
+} from './OutputFormatterStyle'
 import OutputFormatterStyleStack from './OutputFormatterStyleStack'
 import OutputFormatterInterface from './OutputFormatterInterface'
 import OutputFormatterStyleInterface from './OutputFormatterStyleInterface'
@@ -15,13 +18,13 @@ export interface OutputFormatterStyleInterfaceCollection {
 /**
  * Formatter class for console output.
  *
- * 
+ *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
  */
 export default class OutputFormatter implements OutputFormatterInterface {
@@ -46,7 +49,10 @@ export default class OutputFormatter implements OutputFormatterInterface {
    * @param decorated Whether this formatter should actually decorate strings
    * @param styles    Object mappping names to [[OutputFormatterStyleInterface]] instances
    */
-  public constructor(decorated: boolean = false, styles: OutputFormatterStyleInterfaceCollection = {}) {
+  public constructor(
+    decorated: boolean = false,
+    styles: OutputFormatterStyleInterfaceCollection = {}
+  ) {
     this.decorated = !!decorated
 
     this.setStyle('error', new OutputFormatterStyle('white', 'red'))
@@ -67,7 +73,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    * @param text Text to escape
    * @return Escaped text
    */
-  public static escape (text: string) {
+  public static escape(text: string) {
     text = text.replace(/([^\\]?)</g, '$1\\<')
 
     return OutputFormatter.escapeTrailingBackslash(text)
@@ -81,7 +87,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    *
    * @internal
    */
-  public static escapeTrailingBackslash (text: string) {
+  public static escapeTrailingBackslash(text: string) {
     if ('\\' === text.slice(-1)) {
       const len = text.length
       text = trimEnd(text, '\\')
@@ -93,11 +99,14 @@ export default class OutputFormatter implements OutputFormatterInterface {
 
   /**
    * Creates a new instance containing the same `decorated` flag and styles.
-   * 
+   *
    * @return The cloned [[OutputFormatter]] instance
    */
-  public clone () {
-    return new OutputFormatter(this.isDecorated(), Object.assign({}, this.styles))
+  public clone() {
+    return new OutputFormatter(
+      this.isDecorated(),
+      Object.assign({}, this.styles)
+    )
   }
 
   /**
@@ -105,7 +114,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    *
    * @param decorated Whether to decorate the messages or not
    */
-  public setDecorated (decorated: boolean): void {
+  public setDecorated(decorated: boolean): void {
     this.decorated = !!decorated
   }
 
@@ -114,7 +123,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    *
    * @return True if the output will decorate messages, false otherwise
    */
-  public isDecorated (): boolean {
+  public isDecorated(): boolean {
     return this.decorated
   }
 
@@ -124,7 +133,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    * @param name  The style name
    * @param style The style instance
    */
-  public setStyle (name: string, style: OutputFormatterStyleInterface) {
+  public setStyle(name: string, style: OutputFormatterStyleInterface) {
     this.styles[name.toLowerCase()] = style
   }
 
@@ -134,7 +143,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    * @param string name
    * @return bool
    */
-  public hasStyle (name: string) {
+  public hasStyle(name: string) {
     return !!this.styles[name.toLowerCase()]
   }
 
@@ -146,7 +155,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    *
    * @throws ReferenceError When style isn't defined
    */
-  public getStyle (name: string): OutputFormatterStyleInterface {
+  public getStyle(name: string): OutputFormatterStyleInterface {
     if (!this.hasStyle(name)) {
       throw new ReferenceError(`Undefined style: ${name}`)
     }
@@ -161,7 +170,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    *
    * @return The styled message
    */
-  public format (message: string) {
+  public format(message: string) {
     message = String(message)
     let offset = 0
     let output = ''
@@ -169,7 +178,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
     const tagsRegex = new RegExp(`<((${tagRegex})|\\/(${tagRegex})?)>`, 'gi')
 
     let match
-    while (match = tagsRegex.exec(message)) {
+    while ((match = tagsRegex.exec(message))) {
       const text = match[0]
       const pos = match.index
 
@@ -219,7 +228,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
   /**
    * Gets the used style stack.
    */
-  public getStyleStack () {
+  public getStyleStack() {
     return this.styleStack
   }
 
@@ -229,7 +238,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
    * @param str The string to create the formatter style from
    * @return `false` if `str` is not format string
    */
-  private createStyleFromString (str: string) {
+  private createStyleFromString(str: string) {
     if (this.styles[str]) {
       return this.styles[str]
     }
@@ -238,7 +247,7 @@ export default class OutputFormatter implements OutputFormatterInterface {
     const style = new OutputFormatterStyle()
     let gotMatch = false
     let match
-    while (match = styleRegex.exec(str)) {
+    while ((match = styleRegex.exec(str))) {
       gotMatch = true
 
       if ('fg' == match[1]) {
@@ -275,7 +284,7 @@ and will be removed in 4.0. Error "${e}".`)
    * @param text The text to format
    * @return The formatted text
    */
-  private applyCurrentStyle (text: string) {
+  private applyCurrentStyle(text: string) {
     return this.isDecorated() && text.length > 0
       ? this.styleStack.getCurrent().apply(text)
       : text

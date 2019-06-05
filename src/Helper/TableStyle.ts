@@ -4,17 +4,17 @@ import { arrContains, PAD_TYPE } from './Helper'
  * Defines the styles for a Table.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Саша Стаменковић <umpirsky@gmail.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
- * 
+ *
  */
 export default class TableStyle {
   /**
@@ -65,7 +65,7 @@ export default class TableStyle {
   /**
    * Clones the [[TableStyle]] instance.
    */
-  public clone () {
+  public clone() {
     const inst = new TableStyle()
     inst.setPaddingChar(this.getPaddingChar())
     inst.setHorizontalBorderChar(this.getHorizontalBorderChar())
@@ -84,7 +84,7 @@ export default class TableStyle {
    *
    * @param paddingChar The cell padding character to use
    */
-  public setPaddingChar (paddingChar: string) {
+  public setPaddingChar(paddingChar: string) {
     if (!paddingChar) {
       throw new Error('The padding char must not be empty')
     }
@@ -97,7 +97,7 @@ export default class TableStyle {
   /**
    * Gets padding character, used for cell padding.
    */
-  public getPaddingChar () {
+  public getPaddingChar() {
     return this.paddingChar
   }
 
@@ -106,7 +106,7 @@ export default class TableStyle {
    *
    * @param horizontalBorderChar The horizontal border character to use
    */
-  public setHorizontalBorderChar (horizontalBorderChar: string) {
+  public setHorizontalBorderChar(horizontalBorderChar: string) {
     this.horizontalBorderChar = horizontalBorderChar
 
     return this
@@ -115,7 +115,7 @@ export default class TableStyle {
   /**
    * Gets horizontal border character.
    */
-  public getHorizontalBorderChar () {
+  public getHorizontalBorderChar() {
     return this.horizontalBorderChar
   }
 
@@ -124,7 +124,7 @@ export default class TableStyle {
    *
    * @param verticalBorderChar The vertical border character to use
    */
-  public setVerticalBorderChar (verticalBorderChar: string) {
+  public setVerticalBorderChar(verticalBorderChar: string) {
     this.verticalBorderChar = verticalBorderChar
 
     return this
@@ -133,7 +133,7 @@ export default class TableStyle {
   /**
    * Gets vertical border character.
    */
-  public getVerticalBorderChar () {
+  public getVerticalBorderChar() {
     return this.verticalBorderChar
   }
 
@@ -142,7 +142,7 @@ export default class TableStyle {
    *
    * @param crossingChar The crossing character to use
    */
-  public setCrossingChar (crossingChar: string) {
+  public setCrossingChar(crossingChar: string) {
     this.crossingChar = crossingChar
 
     return this
@@ -151,7 +151,7 @@ export default class TableStyle {
   /**
    * Gets crossing character.
    */
-  public getCrossingChar () {
+  public getCrossingChar() {
     return this.crossingChar
   }
 
@@ -160,7 +160,7 @@ export default class TableStyle {
    *
    * @param cellHeaderFormat The header cell format to use
    */
-  public setCellHeaderFormat (cellHeaderFormat: string) {
+  public setCellHeaderFormat(cellHeaderFormat: string) {
     this.cellHeaderFormat = cellHeaderFormat
 
     return this
@@ -169,7 +169,7 @@ export default class TableStyle {
   /**
    * Gets header cell format.
    */
-  getCellHeaderFormat () {
+  getCellHeaderFormat() {
     return this.cellHeaderFormat
   }
 
@@ -178,7 +178,7 @@ export default class TableStyle {
    *
    * @param cellRowFormat The row cell format to use
    */
-  setCellRowFormat (cellRowFormat: string) {
+  setCellRowFormat(cellRowFormat: string) {
     this.cellRowFormat = cellRowFormat
 
     return this
@@ -187,7 +187,7 @@ export default class TableStyle {
   /**
    * Gets row cell format.
    */
-  getCellRowFormat () {
+  getCellRowFormat() {
     return this.cellRowFormat
   }
 
@@ -196,7 +196,7 @@ export default class TableStyle {
    *
    * @param cellRowContentFormat The cell content format to use
    */
-  setCellRowContentFormat (cellRowContentFormat: string) {
+  setCellRowContentFormat(cellRowContentFormat: string) {
     this.cellRowContentFormat = cellRowContentFormat
 
     return this
@@ -205,7 +205,7 @@ export default class TableStyle {
   /**
    * Gets row cell content format.
    */
-  getCellRowContentFormat () {
+  getCellRowContentFormat() {
     return this.cellRowContentFormat
   }
 
@@ -214,7 +214,7 @@ export default class TableStyle {
    *
    * @param borderFormat The border format to use
    */
-  setBorderFormat (borderFormat: string) {
+  setBorderFormat(borderFormat: string) {
     this.borderFormat = borderFormat
 
     return this
@@ -223,7 +223,7 @@ export default class TableStyle {
   /**
    * Gets table border format.
    */
-  getBorderFormat () {
+  getBorderFormat() {
     return this.borderFormat
   }
 
@@ -232,9 +232,13 @@ export default class TableStyle {
    *
    * @param padType The padding type to use
    */
-  setPadType (padType: PAD_TYPE) {
-    if (!arrContains(['STR_PAD_LEFT', 'STR_PAD_RIGHT', 'STR_PAD_BOTH'], padType)) {
-      throw new ReferenceError('Invalid padding type. Expected one of (STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH).')
+  setPadType(padType: PAD_TYPE) {
+    if (
+      !arrContains(['STR_PAD_LEFT', 'STR_PAD_RIGHT', 'STR_PAD_BOTH'], padType)
+    ) {
+      throw new ReferenceError(
+        'Invalid padding type. Expected one of (STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH).'
+      )
     }
 
     this.padType = padType
@@ -245,7 +249,7 @@ export default class TableStyle {
   /**
    * Gets cell padding type.
    */
-  getPadType () {
+  getPadType() {
     return this.padType
   }
 }

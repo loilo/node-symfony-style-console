@@ -1,5 +1,8 @@
 import { EOL, DIRECTORY_SEPARATOR } from '../env'
-import OutputInterface, { VERBOSITY_LEVEL, VERBOSITY_NORMAL } from './OutputInterface'
+import OutputInterface, {
+  VERBOSITY_LEVEL,
+  VERBOSITY_NORMAL
+} from './OutputInterface'
 import OutputFormatterInterface from '../Formatter/OutputFormatterInterface'
 import StreamOutput from './StreamOutput'
 
@@ -20,18 +23,18 @@ import StreamOutput from './StreamOutput'
  * ```
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
- * 
+ *
  */
 export default class ConsoleOutput extends StreamOutput {
   private stderr: OutputInterface
 
-  public constructor (
+  public constructor(
     verbosity: VERBOSITY_LEVEL = VERBOSITY_NORMAL,
     output: NodeJS.WritableStream = process.stdout,
     decorated: boolean = true,
@@ -40,7 +43,12 @@ export default class ConsoleOutput extends StreamOutput {
     super(output, verbosity, decorated, formatter)
 
     const actualDecorated = this.isDecorated()
-    this.stderr = new StreamOutput(this.openErrorStream(), verbosity, decorated, formatter)
+    this.stderr = new StreamOutput(
+      this.openErrorStream(),
+      verbosity,
+      decorated,
+      formatter
+    )
 
     if (null === decorated) {
       this.setDecorated(actualDecorated && this.stderr.isDecorated())
@@ -50,7 +58,7 @@ export default class ConsoleOutput extends StreamOutput {
   /**
    * {@inheritdoc}
    */
-  public setDecorated (decorated: boolean) {
+  public setDecorated(decorated: boolean) {
     super.setDecorated(decorated)
     this.stderr.setDecorated(decorated)
   }
@@ -58,7 +66,7 @@ export default class ConsoleOutput extends StreamOutput {
   /**
    * {@inheritdoc}
    */
-  public setFormatter (formatter: OutputFormatterInterface) {
+  public setFormatter(formatter: OutputFormatterInterface) {
     super.setFormatter(formatter)
     this.stderr.setFormatter(formatter)
   }
@@ -66,7 +74,7 @@ export default class ConsoleOutput extends StreamOutput {
   /**
    * {@inheritdoc}
    */
-  public setVerbosity (level: VERBOSITY_LEVEL) {
+  public setVerbosity(level: VERBOSITY_LEVEL) {
     super.setVerbosity(level)
     this.stderr.setVerbosity(level)
   }
@@ -74,14 +82,14 @@ export default class ConsoleOutput extends StreamOutput {
   /**
    * {@inheritdoc}
    */
-  public getErrorOutput () {
+  public getErrorOutput() {
     return this.stderr
   }
 
   /**
    * {@inheritdoc}
    */
-  public setErrorOutput (error: OutputInterface) {
+  public setErrorOutput(error: OutputInterface) {
     this.stderr = error
   }
 
@@ -90,7 +98,7 @@ export default class ConsoleOutput extends StreamOutput {
    *
    * @return bool
    */
-  protected hasStdoutSupport () {
+  protected hasStdoutSupport() {
     return !!process.stdout
   }
 
@@ -99,14 +107,14 @@ export default class ConsoleOutput extends StreamOutput {
    *
    * @return bool
    */
-  protected hasStderrSupport () {
+  protected hasStderrSupport() {
     return !!process.stderr
   }
 
   /**
    * @return NodeJS.WritableStream
    */
-  private openOutputStream () {
+  private openOutputStream() {
     if (!this.hasStdoutSupport()) {
       throw new Error('No process.stdout available')
     }
@@ -117,7 +125,7 @@ export default class ConsoleOutput extends StreamOutput {
   /**
    * @return resource
    */
-  private openErrorStream () {
+  private openErrorStream() {
     if (!this.hasStderrSupport()) {
       if (!this.hasStdoutSupport()) {
         throw new Error('Neither process.stderr nor process.stdout available')

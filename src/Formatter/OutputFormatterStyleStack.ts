@@ -3,16 +3,16 @@ import OutputFormatterStyleInterface from './OutputFormatterStyleInterface'
 
 /**
  * Manages nesting of [[OutputFormatterStyleInterface]] styles.
- * 
- * 
+ *
+ *
  * @author Jean-François Simon <contact@jfsimon.fr>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
- * 
+ *
  */
 class OutputFormatterStyleStack {
   private styles: OutputFormatterStyleInterface[]
@@ -23,7 +23,7 @@ class OutputFormatterStyleStack {
    *
    * @param emptyStyle
    */
-  public constructor (emptyStyle: OutputFormatterStyleInterface = null) {
+  public constructor(emptyStyle: OutputFormatterStyleInterface = null) {
     this.emptyStyle = emptyStyle || new OutputFormatterStyle()
     this.reset()
   }
@@ -31,7 +31,7 @@ class OutputFormatterStyleStack {
   /**
    * Resets stack (ie. empty internal arrays).
    */
-  public reset () {
+  public reset() {
     this.styles = []
   }
 
@@ -40,7 +40,7 @@ class OutputFormatterStyleStack {
    *
    * @param style
    */
-  public push (style: OutputFormatterStyleInterface) {
+  public push(style: OutputFormatterStyleInterface) {
     this.styles.push(style)
   }
 
@@ -53,7 +53,7 @@ class OutputFormatterStyleStack {
    *
    * @throws InvalidArgumentException When style tags incorrectly nested
    */
-  public pop (style: OutputFormatterStyleInterface = null) {
+  public pop(style: OutputFormatterStyleInterface = null) {
     if (!this.styles.length) {
       return this.emptyStyle
     }
@@ -80,7 +80,7 @@ class OutputFormatterStyleStack {
    *
    * @return OutputFormatterStyle
    */
-  public getCurrent () {
+  public getCurrent() {
     if (!this.styles.length) {
       return this.emptyStyle
     }
@@ -92,7 +92,7 @@ class OutputFormatterStyleStack {
    * @param emptyStyle
    * @return this
    */
-  public setEmptyStyle (emptyStyle: OutputFormatterStyleInterface) {
+  public setEmptyStyle(emptyStyle: OutputFormatterStyleInterface) {
     this.emptyStyle = emptyStyle
 
     return this
@@ -101,7 +101,7 @@ class OutputFormatterStyleStack {
   /**
    * @return OutputFormatterStyle
    */
-  public getEmptyStyle () {
+  public getEmptyStyle() {
     return this.emptyStyle
   }
 }

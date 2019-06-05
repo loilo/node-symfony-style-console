@@ -14,13 +14,18 @@ export interface StringHash {
 
 /**
  * Count occurrences of `needle` in `haystack`. Doesn't count overlapped substrings.
- * 
+ *
  * @param haystack The string to search in
  * @param needle   The substring to search for
  * @param offset   The offset where to start counting. If the offset is negative, counting starts from the end of the string.
  * @param length   The maximum length after the specified offset to search for the substring. A negative length counts from the end of haystack.
  */
-export function countOccurences (haystack: string, needle: string, offset: number = 0, length: number = 0): number|false {
+export function countOccurences(
+  haystack: string,
+  needle: string,
+  offset: number = 0,
+  length: number = 0
+): number | false {
   let count = 0
 
   if (!needle.length) {
@@ -29,7 +34,7 @@ export function countOccurences (haystack: string, needle: string, offset: numbe
 
   offset--
   while ((offset = haystack.indexOf(needle, offset + 1)) !== -1) {
-    if (length > 0 && (offset + needle.length) > length) {
+    if (length > 0 && offset + needle.length > length) {
       return false
     }
     count++
@@ -40,11 +45,11 @@ export function countOccurences (haystack: string, needle: string, offset: numbe
 
 /**
  * Generates an array containing the integer values starting with `from` and ending with `to`.
- * 
+ *
  * @param from The lower bound
  * @param to   The upper bound
  */
-export function range (from: number, to: number): number[] {
+export function range(from: number, to: number): number[] {
   from = Math.round(from)
   to = Math.round(to)
   const arr: number[] = []
@@ -60,23 +65,36 @@ export function range (from: number, to: number): number[] {
 
 /**
  * Formats a string.
- *  
+ *
  * This is a port of PHP's [`sprintf`](https://secure.php.net/manual/de/function.sprintf.php) function.
- * 
+ *
  * @param format The formatting template
  * @param args   The values to merge into the template
  */
-export function sprintf (format: string, ...args: any[]) {
+export function sprintf(format: string, ...args: any[]) {
   let regex = /%%|%(\d+\$)?([-+'#0 ]*)(\*\d+\$|\*|\d+)?(?:\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g
   const a = args.map(arg => String(arg))
   let i = 0
 
-  let _pad = function (str: string, len: number, chr = ' ', leftJustify: boolean) {
-    let padding = (str.length >= len) ? '' : new Array(1 + len - str.length >>> 0).join(chr)
+  let _pad = function(
+    str: string,
+    len: number,
+    chr = ' ',
+    leftJustify: boolean
+  ) {
+    let padding =
+      str.length >= len ? '' : new Array((1 + len - str.length) >>> 0).join(chr)
     return leftJustify ? str + padding : padding + str
   }
 
-  let justify = function (value: string, prefix: string, leftJustify: boolean, minWidth: number, zeroPad: boolean, customPadChar?: string) {
+  let justify = function(
+    value: string,
+    prefix: string,
+    leftJustify: boolean,
+    minWidth: number,
+    zeroPad: boolean,
+    customPadChar?: string
+  ) {
     let diff = minWidth - value.length
     if (diff > 0) {
       if (leftJustify || !zeroPad) {
@@ -101,17 +119,33 @@ export function sprintf (format: string, ...args: any[]) {
     '16': '0x'
   }
 
-  let _formatBaseX = function (value: string|number, base: AvailableBases, prefix: string|boolean, leftJustify: boolean, minWidth: number, precision: number, zeroPad: boolean): string {
+  let _formatBaseX = function(
+    value: string | number,
+    base: AvailableBases,
+    prefix: string | boolean,
+    leftJustify: boolean,
+    minWidth: number,
+    precision: number,
+    zeroPad: boolean
+  ): string {
     // Note: casts negative numbers to positive ones
     value = +value
     let number = value >>> 0
     prefix = (prefix && number && prefixValues[String(base)]) || ''
-    const strValue = prefix + _pad(number.toString(+base), precision || 0, '0', false)
+    const strValue =
+      prefix + _pad(number.toString(+base), precision || 0, '0', false)
     return justify(strValue, prefix, leftJustify, minWidth, zeroPad)
   }
 
   // _formatString()
-  let _formatString = function (value: string, leftJustify: boolean, minWidth: number, precision: number, zeroPad: boolean, customPadChar?: string) {
+  let _formatString = function(
+    value: string,
+    leftJustify: boolean,
+    minWidth: number,
+    precision: number,
+    zeroPad: boolean,
+    customPadChar?: string
+  ) {
     if (precision !== null && precision !== undefined) {
       value = value.slice(0, precision)
     }
@@ -120,9 +154,19 @@ export function sprintf (format: string, ...args: any[]) {
 
   // doFormat()
   // RegEx replacer
-  let doFormat = function (substring: string, valueIndex: number, flags: string, minWidth: string|number, precision: string|number, type: string) {
-
-    let number, prefix, method: NumberStringifyMethod, textTransform: TextTransform, value
+  let doFormat = function(
+    substring: string,
+    valueIndex: number,
+    flags: string,
+    minWidth: string | number,
+    precision: string | number,
+    type: string
+  ) {
+    let number,
+      prefix,
+      method: NumberStringifyMethod,
+      textTransform: TextTransform,
+      value
 
     if (substring === '%%') {
       return '%'
@@ -185,7 +229,7 @@ export function sprintf (format: string, ...args: any[]) {
 
     if (typeof precision === 'number') {
     } else if (!precision) {
-      precision = 'fFeE'.indexOf(type) > -1 ? 6 : (type === 'd') ? 0 : undefined
+      precision = 'fFeE'.indexOf(type) > -1 ? 6 : type === 'd' ? 0 : undefined
     } else if (precision === '*') {
       precision = +a[i++]
     } else if (precision.charAt(0) === '*') {
@@ -199,25 +243,77 @@ export function sprintf (format: string, ...args: any[]) {
 
     switch (type) {
       case 's':
-        return _formatString(value, leftJustify, minWidth, precision, zeroPad, customPadChar)
+        return _formatString(
+          value,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad,
+          customPadChar
+        )
       case 'c':
-        return _formatString(String.fromCharCode(+value), leftJustify, minWidth, precision, zeroPad)
+        return _formatString(
+          String.fromCharCode(+value),
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        )
       case 'b':
-        return _formatBaseX(value, 2, prefixBaseX, leftJustify, minWidth, precision, zeroPad)
+        return _formatBaseX(
+          value,
+          2,
+          prefixBaseX,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        )
       case 'o':
-        return _formatBaseX(value, 8, prefixBaseX, leftJustify, minWidth, precision, zeroPad)
+        return _formatBaseX(
+          value,
+          8,
+          prefixBaseX,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        )
       case 'x':
-        return _formatBaseX(value, 16, prefixBaseX, leftJustify, minWidth, precision, zeroPad)
+        return _formatBaseX(
+          value,
+          16,
+          prefixBaseX,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        )
       case 'X':
-        return _formatBaseX(value, 16, prefixBaseX, leftJustify, minWidth, precision, zeroPad)
-        .toUpperCase()
+        return _formatBaseX(
+          value,
+          16,
+          prefixBaseX,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        ).toUpperCase()
       case 'u':
-        return _formatBaseX(value, 10, prefixBaseX, leftJustify, minWidth, precision, zeroPad)
+        return _formatBaseX(
+          value,
+          10,
+          prefixBaseX,
+          leftJustify,
+          minWidth,
+          precision,
+          zeroPad
+        )
       case 'i':
       case 'd':
         number = +value || 0
         // Plain Math.round doesn't just truncate
-        number = Math.round(number - number % 1)
+        number = Math.round(number - (number % 1))
         prefix = number < 0 ? '-' : positivePrefix
         value = prefix + _pad(String(Math.abs(number)), precision, '0', false)
         return justify(value, prefix, leftJustify, minWidth, zeroPad)
@@ -230,13 +326,19 @@ export function sprintf (format: string, ...args: any[]) {
         number = +value
         prefix = number < 0 ? '-' : positivePrefix
 
-        const methods: NumberStringifyMethod[] = ['toExponential', 'toFixed', 'toPrecision']
+        const methods: NumberStringifyMethod[] = [
+          'toExponential',
+          'toFixed',
+          'toPrecision'
+        ]
         method = methods['efg'.indexOf(type.toLowerCase())]
 
         const transforms: TextTransform[] = ['toString', 'toUpperCase']
         textTransform = transforms['eEfFgG'.indexOf(type) % 2]
         value = prefix + Math.abs(number)[method](precision)
-        return justify(value, prefix, leftJustify, minWidth, zeroPad)[textTransform]()
+        return justify(value, prefix, leftJustify, minWidth, zeroPad)[
+          textTransform
+        ]()
       default:
         return substring
     }
@@ -247,7 +349,7 @@ export function sprintf (format: string, ...args: any[]) {
 
 /**
  * Creates a human-friendly representation of a number of bytes.
- * 
+ *
  * @param memory The number of bytes to format
  */
 export function formatMemory(memory: number) {
@@ -270,11 +372,14 @@ import OutputFormatterInterface from '../Formatter/OutputFormatterInterface'
 
 /**
  * Removes `<...>` formatting and ANSI escape sequences from a string.
- * 
+ *
  * @param formatter The formatter instance in charge to resolve `<...>` formatting
  * @param str       The string to perform the removing on
  */
-export function removeDecoration (formatter: OutputFormatterInterface, str: string) {
+export function removeDecoration(
+  formatter: OutputFormatterInterface,
+  str: string
+) {
   const isDecorated = formatter.isDecorated()
   formatter.setDecorated(false)
 
@@ -291,20 +396,25 @@ export function removeDecoration (formatter: OutputFormatterInterface, str: stri
 
 /**
  * Get the length of a string ignoring `<...>` formatting and ANSI escape sequences.
- * 
- * @param formatter The formatter instance in charge to resolve `<...>` formatting 
+ *
+ * @param formatter The formatter instance in charge to resolve `<...>` formatting
  * @param str       The string whose length to determine
  */
-export function lengthWithoutDecoration (formatter: OutputFormatterInterface, str: string) {
+export function lengthWithoutDecoration(
+  formatter: OutputFormatterInterface,
+  str: string
+) {
   return removeDecoration(formatter, str).length
 }
 
 /**
  * Creates an object literal with key/value pairs of the given `obj` swapped.
- * 
+ *
  * @param obj The object whose keys and values to use
  */
-export function flipObject (obj: ArbitraryObjectLiteral): ArbitraryObjectLiteral {
+export function flipObject(
+  obj: ArbitraryObjectLiteral
+): ArbitraryObjectLiteral {
   const flipped = Object.create(null)
   for (const key in obj) flipped[obj[key]] = key
   return flipped
@@ -312,11 +422,11 @@ export function flipObject (obj: ArbitraryObjectLiteral): ArbitraryObjectLiteral
 
 /**
  * Checks if `item` is contained by `arr`.
- * 
+ *
  * @param arr  The array to search in
  * @param item The item to search for
  */
-export function arrContains (arr: any[], item: any) {
+export function arrContains(arr: any[], item: any) {
   if (Array.prototype.includes) {
     return arr.includes(item)
   } else {
@@ -326,13 +436,13 @@ export function arrContains (arr: any[], item: any) {
 
 /**
  * Creates a human-friendly representation of a number of seconds.
- * 
+ *
  * @param secs The number of seconds to format
  */
-export function formatTime (secs: number): string {
+export function formatTime(secs: number): string {
   interface TimeFormat extends Array<any> {
-    0: number,
-    1: string,
+    0: number
+    1: string
     2?: number
   }
   const timeFormats: TimeFormat[] = [
@@ -372,16 +482,21 @@ export type PAD_TYPE = 'STR_PAD_LEFT' | 'STR_PAD_RIGHT' | 'STR_PAD_BOTH'
 
 /**
  * Pads a string to a certain length with another string.
- * 
+ *
  * @param input     The string to pad
  * @param padLength The desired length of the resulting string
  * @param padString The string to use as padding material
  * @param padType   Where to pad the string
  */
-export function strPad (input: string, padLength: number, padString: string, padType: PAD_TYPE = 'STR_PAD_RIGHT') {
+export function strPad(
+  input: string,
+  padLength: number,
+  padString: string,
+  padType: PAD_TYPE = 'STR_PAD_RIGHT'
+) {
   let half = ''
   let padToGo
-  let _strPadRepeater = function (s: string, len: number) {
+  let _strPadRepeater = function(s: string, len: number) {
     let collect = ''
     while (collect.length < len) {
       collect += s
@@ -391,7 +506,11 @@ export function strPad (input: string, padLength: number, padString: string, pad
   }
   input += ''
   padString = padString !== undefined ? padString : ' '
-  if (padType !== 'STR_PAD_LEFT' && padType !== 'STR_PAD_RIGHT' && padType !== 'STR_PAD_BOTH') {
+  if (
+    padType !== 'STR_PAD_LEFT' &&
+    padType !== 'STR_PAD_RIGHT' &&
+    padType !== 'STR_PAD_BOTH'
+  ) {
     padType = 'STR_PAD_RIGHT'
   }
   if ((padToGo = padLength - input.length) > 0) {
@@ -410,15 +529,17 @@ export function strPad (input: string, padLength: number, padString: string, pad
 
 /**
  * Replaces elements from passed arrays into the first array recursively. (non-destructive)
- * 
+ *
  * @param arr  The array to patch
  * @param args The arrays to merge into `arr`
  */
-export function arrayReplaceRecursive (arr: any[], ...args: any[][]): any[] {
+export function arrayReplaceRecursive(arr: any[], ...args: any[][]): any[] {
   let i = 0
   let p = ''
   if (!args.length) {
-    throw new Error('There should be at least 2 arguments passed to array_replace_recursive()')
+    throw new Error(
+      'There should be at least 2 arguments passed to array_replace_recursive()'
+    )
   }
   // Although docs state that the arguments are passed in by reference,
   // it seems they are not altered, but rather the copy that is returned
@@ -443,17 +564,17 @@ export function arrayReplaceRecursive (arr: any[], ...args: any[][]): any[] {
 
 /**
  * Creates an array filled with a value.
- * 
+ *
  * @param startIndex The index to start filling at. Previous values will be `undefined`.
  * @param num        The number elements to insert
  * @param value      The element to fill the array with
  */
-export function arrayFill<T> (startIndex: number, num: number, value: T): T[] {
+export function arrayFill<T>(startIndex: number, num: number, value: T): T[] {
   let key
   let tmpArr = []
   if (!isNaN(startIndex) && !isNaN(num)) {
     for (key = 0; key < num; key++) {
-      tmpArr[(key + startIndex)] = value
+      tmpArr[key + startIndex] = value
     }
   }
   return tmpArr
@@ -461,11 +582,14 @@ export function arrayFill<T> (startIndex: number, num: number, value: T): T[] {
 
 /**
  * Cuts a string into an array of chunks of given length.
- * 
+ *
  * @param string      The string to cut
  * @param splitLength The length of the resulting chunks
  */
-export function chunkString (string: string, splitLength: number = 1): string[]|false {
+export function chunkString(
+  string: string,
+  splitLength: number = 1
+): string[] | false {
   if (string === null || splitLength < 1) {
     return false
   }
@@ -474,33 +598,35 @@ export function chunkString (string: string, splitLength: number = 1): string[]|
   let pos = 0
   let len = string.length
   while (pos < len) {
-    chunks.push(string.slice(pos, pos += splitLength))
+    chunks.push(string.slice(pos, (pos += splitLength)))
   }
   return chunks
 }
 
 /**
  * Strips HTML tags from a string.
- * 
+ *
  * @param input   The string to sanitize
  * @param allowed A string containing a set of allowed tags. Example: `<a><strong><em>`
  */
-export function stripTags (input: string, allowed: string = ''): string {
-  allowed = (((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('')
+export function stripTags(input: string, allowed: string = ''): string {
+  allowed = (
+    ((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []
+  ).join('')
   let tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi
   let comments = /<!--[\s\S]*?-->/gi
-  return input.replace(comments, '').replace(tags, function ($0, $1) {
+  return input.replace(comments, '').replace(tags, function($0, $1) {
     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
   })
 }
 
 /**
  * Trims the end of a string.
- * 
+ *
  * @param str      The string to trim
  * @param charlist The characters to trim. Everything that can go into a regex character class is allowed.
  */
-export function trimEnd (str: string, charlist = ' \\s\u00A0'): string {
+export function trimEnd(str: string, charlist = ' \\s\u00A0'): string {
   charlist = String(charlist).replace(/([[\]().?/*{}+$^:])/g, '\\$1')
   let re = new RegExp('[' + charlist.replace(/\\/g, '\\\\') + ']+$', 'g')
   return (str + '').replace(re, '')
@@ -508,33 +634,37 @@ export function trimEnd (str: string, charlist = ' \\s\u00A0'): string {
 
 /**
  * Non-recursively replaces a set of values inside a string.
- * 
+ *
  * @param str          The string to perform replacements on
  * @param replacePairs An object that maps strings to their respective replacements
  */
-export function safeReplace (str: string, replacePairs: StringHash): string {
-    'use strict';
-    str = String(str)
-    let key, re;
-    for (key in replacePairs) {
-        if (replacePairs.hasOwnProperty(key)) {
-            re = new RegExp(key, 'g');
-            str = str.replace(re, replacePairs[key]);
-        }
+export function safeReplace(str: string, replacePairs: StringHash): string {
+  'use strict'
+  str = String(str)
+  let key, re
+  for (key in replacePairs) {
+    if (replacePairs.hasOwnProperty(key)) {
+      re = new RegExp(key, 'g')
+      str = str.replace(re, replacePairs[key])
     }
-    return str;
+  }
+  return str
 }
 
 /**
  * Wraps a string to a given number of characters.
- * 
+ *
  * Note that, as opposed to PHP's wordwrap, this always cuts words which are too long for one line.
- * 
+ *
  * @param str           The string to wrap
  * @param width         The maximum length of a line
  * @param breakSequence The character(s) to use as line breaks
  */
-export function wordwrap (str: string, width = 75, breakSequence = '\n'): string {
+export function wordwrap(
+  str: string,
+  width = 75,
+  breakSequence = '\n'
+): string {
   let j, l, s, r
   str += ''
   if (width < 1) {
@@ -561,7 +691,7 @@ export function wordwrap (str: string, width = 75, breakSequence = '\n'): string
     }
     if (rest.length) partials.push(rest)
 
-      splitted[i] = partials.join(breakSequence)
+    splitted[i] = partials.join(breakSequence)
   }
 
   return splitted.join(breakSequence)
@@ -570,6 +700,6 @@ export function wordwrap (str: string, width = 75, breakSequence = '\n'): string
 /**
  * Returns the current timestamp in seconds.
  */
-export function time () {
+export function time() {
   return Math.floor(Date.now() / 1000)
 }

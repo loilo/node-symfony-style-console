@@ -15,7 +15,10 @@ import OutputInterface from '../Output/OutputInterface'
 
 import TableCell from './TableCell'
 import TableSeparator from './TableSeparator'
-import TableCellInterface, { TableCellInput, TableRowInput } from './TableCellInterface'
+import TableCellInterface, {
+  TableCellInput,
+  TableRowInput
+} from './TableCellInterface'
 import TableStyle from './TableStyle'
 
 export interface TableStyleHash {
@@ -26,15 +29,15 @@ export interface TableStyleHash {
  * Provides helpers to display a table.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP Class
- * 
+ *
  * @author Саша Стаменковић <umpirsky@gmail.com>
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  * @author Max Grigorian <maxakawizard@gmail.com>
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
  */
 export default class Table {
@@ -83,7 +86,7 @@ export default class Table {
    */
   private columnWidths: number[] = []
 
-  public constructor (output: OutputInterface) {
+  public constructor(output: OutputInterface) {
     this.output = output
 
     if (!Table.styles) {
@@ -97,7 +100,7 @@ export default class Table {
    * @param name  The style name
    * @param style A TableStyle instance
    */
-  public static setStyleDefinition (name: string, style: TableStyle) {
+  public static setStyleDefinition(name: string, style: TableStyle) {
     if (!Table.styles) {
       Table.styles = Table.initStyles()
     }
@@ -111,7 +114,7 @@ export default class Table {
    * @param name The style name
    * @return TableStyle
    */
-  public static getStyleDefinition (name: string) {
+  public static getStyleDefinition(name: string) {
     if (!Table.styles) {
       Table.styles = Table.initStyles()
     }
@@ -123,13 +126,12 @@ export default class Table {
     throw new Error(`Style "${name}" is not defined.`)
   }
 
-  private static initStyles () {
+  private static initStyles() {
     const borderless = new TableStyle()
     borderless
       .setHorizontalBorderChar('=')
       .setVerticalBorderChar(' ')
       .setCrossingChar(' ')
-    
 
     const compact = new TableStyle()
     compact
@@ -137,7 +139,6 @@ export default class Table {
       .setVerticalBorderChar(' ')
       .setCrossingChar('')
       .setCellRowContentFormat('%s')
-    
 
     const styleGuide = new TableStyle()
     styleGuide
@@ -145,7 +146,6 @@ export default class Table {
       .setVerticalBorderChar(' ')
       .setCrossingChar(' ')
       .setCellHeaderFormat('%s')
-    
 
     return {
       default: new TableStyle(),
@@ -161,7 +161,7 @@ export default class Table {
    * @param name The style name or a TableStyle instance
    * @return this
    */
-  public setStyle (name: TableStyle|string) {
+  public setStyle(name: TableStyle | string) {
     this.style = this.resolveStyle(name)
 
     return this
@@ -172,7 +172,7 @@ export default class Table {
    *
    * @return TableStyle
    */
-  public getStyle () {
+  public getStyle() {
     return this.style
   }
 
@@ -184,7 +184,7 @@ export default class Table {
    *
    * @return this
    */
-  public setColumnStyle (columnIndex: number, name: TableStyle|string) {
+  public setColumnStyle(columnIndex: number, name: TableStyle | string) {
     columnIndex = Math.round(columnIndex)
 
     this.columnStyles[columnIndex] = this.resolveStyle(name)
@@ -201,14 +201,13 @@ export default class Table {
    *
    * @return TableStyle
    */
-  public getColumnStyle (columnIndex: number) {
+  public getColumnStyle(columnIndex: number) {
     if (this.columnStyles[columnIndex]) {
       return this.columnStyles[columnIndex]
     }
 
     return this.getStyle()
   }
-
 
   /**
    * Sets the minimum width of a column.
@@ -218,7 +217,7 @@ export default class Table {
    *
    * @return this
    */
-  public setColumnWidth (columnIndex: number, width: number) {
+  public setColumnWidth(columnIndex: number, width: number) {
     this.columnWidths[Math.round(columnIndex)] = Math.round(width)
 
     return this
@@ -231,7 +230,7 @@ export default class Table {
    *
    * @return this
    */
-  public setColumnWidths (widths: number[]) {
+  public setColumnWidths(widths: number[]) {
     this.columnWidths = []
     for (let index = 0; index < widths.length; index++) {
       if (typeof widths[index] === 'undefined') continue
@@ -243,12 +242,14 @@ export default class Table {
     return this
   }
 
-  public setHeaders (headers: TableCellInput[] | TableCellInput[][]) {
-    const isNestedRows = (headers: TableCellInput[]|TableCellInput[][]): headers is TableCellInput[][] =>
+  public setHeaders(headers: TableCellInput[] | TableCellInput[][]) {
+    const isNestedRows = (
+      headers: TableCellInput[] | TableCellInput[][]
+    ): headers is TableCellInput[][] =>
       !(headers.length && !Array.isArray(headers[0]))
 
     if (!isNestedRows(headers)) {
-      headers = [ headers ]
+      headers = [headers]
     }
 
     this.headers = headers
@@ -256,13 +257,13 @@ export default class Table {
     return this
   }
 
-  public setRows (rows: TableRowInput[]) {
+  public setRows(rows: TableRowInput[]) {
     this.rows = []
 
     return this.addRows(rows)
   }
 
-  public addRows (rows: TableRowInput[]) {
+  public addRows(rows: TableRowInput[]) {
     for (const row of rows) {
       this.addRow(row)
     }
@@ -270,7 +271,7 @@ export default class Table {
     return this
   }
 
-  public addRow (row: TableRowInput) {
+  public addRow(row: TableRowInput) {
     if (row instanceof TableSeparator) {
       this.rows.push(row)
 
@@ -286,7 +287,7 @@ export default class Table {
     return this
   }
 
-  public setRow (column: number, row: TableRowInput) {
+  public setRow(column: number, row: TableRowInput) {
     this.rows[column] = row
 
     return this
@@ -304,7 +305,7 @@ export default class Table {
    * | 960-425-059-0 | The Lord of the Rings | J. R. R. Tolkien |
    * +---------------+-----------------------+------------------+
    */
-  public render () {
+  public render() {
     this.calculateNumberOfColumns()
     const rows = this.buildTableRows(this.rows)
     const headers = this.buildTableRows(this.headers)
@@ -339,12 +340,10 @@ export default class Table {
    *
    * @return int
    */
-  public getNumberOfColumns (row: TableCellInput[]) {
+  public getNumberOfColumns(row: TableCellInput[]) {
     let columns = row.filter(cell => typeof cell !== 'undefined').length
     for (const column of row) {
-      columns += column instanceof TableCell
-        ? (column.getColspan() - 1)
-        : 0
+      columns += column instanceof TableCell ? column.getColspan() - 1 : 0
     }
 
     return columns
@@ -357,7 +356,7 @@ export default class Table {
    *
    * @return array
    */
-  public getRowColumns (row: TableCellInput[]) {
+  public getRowColumns(row: TableCellInput[]) {
     let columns = range(0, this.numberOfColumns - 1)
     for (let cellKey = 0; cellKey < row.length; cellKey++) {
       if (typeof row[cellKey] === 'undefined') continue
@@ -378,8 +377,11 @@ export default class Table {
    *
    * @return int
    */
-  public getColumnSeparatorWidth () {
-    return sprintf(this.style.getBorderFormat(), this.style.getVerticalBorderChar()).length
+  public getColumnSeparatorWidth() {
+    return sprintf(
+      this.style.getBorderFormat(),
+      this.style.getVerticalBorderChar()
+    ).length
   }
 
   /**
@@ -390,7 +392,7 @@ export default class Table {
    *
    * @return int
    */
-  public getCellWidth (row: TableCellInput[], column: number) {
+  public getCellWidth(row: TableCellInput[], column: number) {
     let cellWidth = 0
 
     if (row[column]) {
@@ -409,20 +411,26 @@ export default class Table {
    *
    * Example: +-----+-----------+-------+
    */
-  private renderRowSeparator () {
+  private renderRowSeparator() {
     const count = this.numberOfColumns
 
     if (!count) {
       return
     }
 
-    if (!this.style.getHorizontalBorderChar() && !this.style.getCrossingChar()) {
+    if (
+      !this.style.getHorizontalBorderChar() &&
+      !this.style.getCrossingChar()
+    ) {
       return
     }
 
     let markup = this.style.getCrossingChar()
     for (let column = 0; column < count; ++column) {
-      markup += this.style.getHorizontalBorderChar().repeat(this.effectiveColumnWidths[column]) +
+      markup +=
+        this.style
+          .getHorizontalBorderChar()
+          .repeat(this.effectiveColumnWidths[column]) +
         this.style.getCrossingChar()
     }
 
@@ -432,8 +440,11 @@ export default class Table {
   /**
    * Renders vertical column separator.
    */
-  private renderColumnSeparator () {
-    return sprintf(this.style.getBorderFormat(), this.style.getVerticalBorderChar())
+  private renderColumnSeparator() {
+    return sprintf(
+      this.style.getBorderFormat(),
+      this.style.getVerticalBorderChar()
+    )
   }
 
   /**
@@ -444,7 +455,7 @@ export default class Table {
    * @param row
    * @param cellFormat
    */
-  private renderRow (row: TableCellInput[], cellFormat: string) {
+  private renderRow(row: TableCellInput[], cellFormat: string) {
     if (!row.length) {
       return
     }
@@ -465,25 +476,39 @@ export default class Table {
    * @param column
    * @param cellFormat
    */
-  private renderCell (row: TableCellInput[], column: number, cellFormat: string) {
+  private renderCell(
+    row: TableCellInput[],
+    column: number,
+    cellFormat: string
+  ) {
     const cell = row[column] || ''
     const cellStr = String(cell)
     let width = this.effectiveColumnWidths[column]
 
     if (cell instanceof TableCell && cell.getColspan() > 1) {
       // add the width of the following columns(numbers of colspan).
-      for (const nextColumn of range(column + 1, column + cell.getColspan() - 1)) {
-        width += this.getColumnSeparatorWidth() + this.effectiveColumnWidths[nextColumn]
+      for (const nextColumn of range(
+        column + 1,
+        column + cell.getColspan() - 1
+      )) {
+        width +=
+          this.getColumnSeparatorWidth() +
+          this.effectiveColumnWidths[nextColumn]
       }
     }
 
     const style = this.getColumnStyle(column)
 
     if (cell instanceof TableSeparator) {
-      return sprintf(style.getBorderFormat(), style.getHorizontalBorderChar().repeat(width))
+      return sprintf(
+        style.getBorderFormat(),
+        style.getHorizontalBorderChar().repeat(width)
+      )
     }
 
-    width += cellStr.length - lengthWithoutDecoration(this.output.getFormatter(), cellStr)
+    width +=
+      cellStr.length -
+      lengthWithoutDecoration(this.output.getFormatter(), cellStr)
     const content = sprintf(style.getCellRowContentFormat(), cell)
 
     return sprintf(
@@ -495,7 +520,7 @@ export default class Table {
   /**
    * Calculate number of columns for this table.
    */
-  private calculateNumberOfColumns () {
+  private calculateNumberOfColumns() {
     if (null != this.numberOfColumns) {
       return
     }
@@ -512,7 +537,7 @@ export default class Table {
     this.numberOfColumns = Math.max(...columns)
   }
 
-  private buildTableRows (rows: TableRowInput[]) {
+  private buildTableRows(rows: TableRowInput[]) {
     let unmergedRows: TableCellInput[][][] = []
     rows = rows.slice(0)
 
@@ -545,7 +570,8 @@ export default class Table {
             row[column] = line
           } else {
             if (!Array.isArray(unmergedRows[rowKey])) unmergedRows[rowKey] = []
-            if (!Array.isArray(unmergedRows[rowKey][lineKey])) unmergedRows[rowKey][lineKey] = []
+            if (!Array.isArray(unmergedRows[rowKey][lineKey]))
+              unmergedRows[rowKey][lineKey] = []
             unmergedRows[rowKey][lineKey][column] = line
           }
         }
@@ -557,7 +583,7 @@ export default class Table {
       if (typeof rows[rowKey] === 'undefined') continue
       if (rows[rowKey] instanceof TableSeparator) continue
 
-      const row = (rows[rowKey]) as TableCellInput[]
+      const row = rows[rowKey] as TableCellInput[]
       tableRows.push(this.fillCells(row))
       if (unmergedRows[rowKey]) {
         tableRows = tableRows.concat(unmergedRows[rowKey])
@@ -575,8 +601,8 @@ export default class Table {
    *
    * @return array
    */
-  private fillNextRows (inputRows: TableRowInput[], line: number) {
-    let unmergedRows: TableCellInput[][] = [] = []
+  private fillNextRows(inputRows: TableRowInput[], line: number) {
+    let unmergedRows: TableCellInput[][] = ([] = [])
 
     if (inputRows[line] instanceof TableSeparator) return inputRows.slice(0)
 
@@ -588,12 +614,13 @@ export default class Table {
       if (cell instanceof TableCell && cell.getRowspan() > 1) {
         const cellStr = String(cell)
         let nbLines = cell.getRowspan() - 1
-        let lines = [ cellStr ]
+        let lines = [cellStr]
         if (cellStr.includes('\n')) {
           lines = cellStr.split('\n')
-          nbLines = lines.length > nbLines
-            ? countOccurences(cellStr, '\n') as number
-            : nbLines
+          nbLines =
+            lines.length > nbLines
+              ? (countOccurences(cellStr, '\n') as number)
+              : nbLines
 
           rows[line][column] = new TableCell(lines[0], {
             colspan: cell.getColspan()
@@ -608,7 +635,11 @@ export default class Table {
           unmergedRows
         )
 
-        for (let unmergedRowKey = 0; unmergedRowKey < unmergedRows.length; unmergedRowKey++) {
+        for (
+          let unmergedRowKey = 0;
+          unmergedRowKey < unmergedRows.length;
+          unmergedRowKey++
+        ) {
           if (typeof unmergedRows[unmergedRowKey] === 'undefined') continue
 
           const unmergedRow = unmergedRows[unmergedRowKey]
@@ -624,7 +655,11 @@ export default class Table {
       }
     }
 
-    for (let unmergedRowKey = 0; unmergedRowKey < unmergedRows.length; unmergedRowKey++) {
+    for (
+      let unmergedRowKey = 0;
+      unmergedRowKey < unmergedRows.length;
+      unmergedRowKey++
+    ) {
       if (typeof unmergedRows[unmergedRowKey] === 'undefined') continue
 
       const unmergedRow = unmergedRows[unmergedRowKey]
@@ -633,8 +668,9 @@ export default class Table {
       if (
         typeof rows[unmergedRowKey] !== 'undefined' &&
         Array.isArray(rows[unmergedRowKey]) &&
-        (this.getNumberOfColumns(rows[unmergedRowKey]) +
-          this.getNumberOfColumns(unmergedRows[unmergedRowKey]) <= this.numberOfColumns)
+        this.getNumberOfColumns(rows[unmergedRowKey]) +
+          this.getNumberOfColumns(unmergedRows[unmergedRowKey]) <=
+          this.numberOfColumns
       ) {
         for (let cellKey = 0; cellKey < unmergedRow.length; cellKey++) {
           if (typeof unmergedRow[cellKey] === 'undefined') continue
@@ -669,7 +705,7 @@ export default class Table {
    *
    * @return array
    */
-  private fillCells (row: TableCellInput[]) {
+  private fillCells(row: TableCellInput[]) {
     const newRow = []
     for (let column = 0; column < row.length; column++) {
       if (typeof row[column] === 'undefined') continue
@@ -677,7 +713,10 @@ export default class Table {
       const cell = row[column]
       newRow.push(cell)
       if (cell instanceof TableCell && cell.getColspan() > 1) {
-        for (const position of range(column + 1, column + cell.getColspan() - 1)) {
+        for (const position of range(
+          column + 1,
+          column + cell.getColspan() - 1
+        )) {
           // insert empty value at column position
           newRow.push('')
         }
@@ -693,7 +732,7 @@ export default class Table {
    *
    * @return array
    */
-  private copyRow (rows: TableCellInput[][], line: number) {
+  private copyRow(rows: TableCellInput[][], line: number) {
     const row = rows[line].slice(0)
     for (let cellKey = 0; cellKey < row.length; cellKey++) {
       if (typeof row[cellKey] === 'undefined') continue
@@ -715,7 +754,7 @@ export default class Table {
    *
    * @param array rows
    */
-  private calculateColumnsWidth (rows: TableRowInput[]) {
+  private calculateColumnsWidth(rows: TableRowInput[]) {
     rows = rows.slice(0)
 
     for (let column = 0; column < this.numberOfColumns; ++column) {
@@ -732,7 +771,10 @@ export default class Table {
 
           const cell = row[i]
           if (cell instanceof TableCell) {
-            const textContent = removeDecoration(this.output.getFormatter(), String(cell))
+            const textContent = removeDecoration(
+              this.output.getFormatter(),
+              String(cell)
+            )
             const textLength = textContent.length
             if (textLength > 0) {
               const contentColumns = chunkString(
@@ -744,7 +786,11 @@ export default class Table {
                 throw new Error(`Could not chunk string: ${textContent}`)
               }
 
-              for (let position = 0; position < contentColumns.length; position++) {
+              for (
+                let position = 0;
+                position < contentColumns.length;
+                position++
+              ) {
                 if (typeof contentColumns[position] === 'undefined') continue
 
                 const content = contentColumns[position]
@@ -757,19 +803,20 @@ export default class Table {
         lengths.push(this.getCellWidth(row, column))
       }
 
-      this.effectiveColumnWidths[column] = Math.max(...lengths) + this.style.getCellRowContentFormat().length - 2
+      this.effectiveColumnWidths[column] =
+        Math.max(...lengths) + this.style.getCellRowContentFormat().length - 2
     }
   }
 
   /**
    * Called after rendering to cleanup cache data.
    */
-  private cleanup () {
+  private cleanup() {
     this.effectiveColumnWidths = []
     this.numberOfColumns = null
   }
 
-  private resolveStyle (name: TableStyle|string) {
+  private resolveStyle(name: TableStyle | string) {
     if (name instanceof TableStyle) {
       return name
     }

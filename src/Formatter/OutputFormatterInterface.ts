@@ -3,17 +3,17 @@ import OutputFormatterStyleInterface from './OutputFormatterStyleInterface'
 /**
  * Formatter interface for console output.
  *
- * 
+ *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
  */
 interface OutputFormatterInterface {
-  clone (): OutputFormatterInterface
+  clone(): OutputFormatterInterface
 
   /**
    * Sets the decorated flag.

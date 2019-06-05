@@ -37,17 +37,17 @@ export interface FormatterHash {
  * The ProgressBar provides helpers to display progress output.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * 
+ *
  * Original PHP class
- * 
+ *
  * @author Chris Jones <leeked@gmail.com>
  *
  * Original PHP class
- * 
+ *
  * @author Florian Reuschel <florian@loilo.de>
- * 
+ *
  * Port to TypeScript
- * 
+ *
  */
 export default class ProgressBar {
   /**
@@ -116,8 +116,8 @@ export default class ProgressBar {
   private startTime: number
 
   /**
-  * The width of each single step.
-  */
+   * The width of each single step.
+   */
   private stepWidth: number
 
   /**
@@ -147,11 +147,11 @@ export default class ProgressBar {
 
   /**
    * Creates a new progress bar.
-   * 
+   *
    * @param OutputInterface output An OutputInterface instance
    * @param int             max    Maximum steps (0 if unknown)
    */
-  public constructor (output: OutputInterface, max = 0) {
+  public constructor(output: OutputInterface, max = 0) {
     if (output instanceof ConsoleOutput) {
       output = output.getErrorOutput()
     }
@@ -177,7 +177,7 @@ export default class ProgressBar {
    * @param name   The format name
    * @param format A format string
    */
-  public static setFormatDefinition (name: string, format: string) {
+  public static setFormatDefinition(name: string, format: string) {
     if (!this.formats) {
       this.formats = this.initFormats()
     }
@@ -189,7 +189,7 @@ export default class ProgressBar {
    * @param name The format name
    * @return A format string
    */
-  public static getFormatDefinition (name: string) {
+  public static getFormatDefinition(name: string) {
     if (!this.formats) {
       this.formats = this.initFormats()
     }
@@ -204,7 +204,10 @@ export default class ProgressBar {
    * @param name     The placeholder name (including the delimiter char like %)
    * @param callback A formatter callback
    */
-  public static setPlaceholderFormatterDefinition (name: string, callable: FormatterFn) {
+  public static setPlaceholderFormatterDefinition(
+    name: string,
+    callable: FormatterFn
+  ) {
     if (!this.formatters) {
       this.formatters = this.initPlaceholderFormatters()
     }
@@ -217,7 +220,7 @@ export default class ProgressBar {
    * @param name       The placeholder name (including the delimiter char like %)
    * @return A formatter callback
    */
-  public static getPlaceholderFormatterDefinition (name: string) {
+  public static getPlaceholderFormatterDefinition(name: string) {
     if (!this.formatters) {
       this.formatters = this.initPlaceholderFormatters()
     }
@@ -227,15 +230,17 @@ export default class ProgressBar {
   /**
    * Gets the initially available format templates.
    */
-  private static initFormats (): StringHash {
+  private static initFormats(): StringHash {
     return {
       normal: ' %current%/%max% [%bar%] %percent:3s%%',
       normal_nomax: ' %current% [%bar%]',
       verbose: ' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%',
       verbose_nomax: ' %current% [%bar%] %elapsed:6s%',
-      very_verbose: ' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%',
+      very_verbose:
+        ' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%',
       very_verbose_nomax: ' %current% [%bar%] %elapsed:6s%',
-      debug: ' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%',
+      debug:
+        ' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%',
       debug_nomax: ' %current% [%bar%] %elapsed:6s% %memory:6s%'
     }
   }
@@ -243,28 +248,38 @@ export default class ProgressBar {
   /**
    * Gets the initially available format placeholder callbacks.
    */
-  private static initPlaceholderFormatters (): FormatterHash {
+  private static initPlaceholderFormatters(): FormatterHash {
     return {
-      bar (bar, output) {
-        const completeBars = Math.floor(bar.getMaxSteps() > 0
-          ? bar.getProgressPercent() * bar.getBarWidth()
-          : bar.getProgress() % bar.getBarWidth())
+      bar(bar, output) {
+        const completeBars = Math.floor(
+          bar.getMaxSteps() > 0
+            ? bar.getProgressPercent() * bar.getBarWidth()
+            : bar.getProgress() % bar.getBarWidth()
+        )
         let display = bar.getBarCharacter().repeat(completeBars)
 
         if (completeBars < bar.getBarWidth()) {
-          const emptyBars = bar.getBarWidth() -
+          const emptyBars =
+            bar.getBarWidth() -
             completeBars -
-            lengthWithoutDecoration(output.getFormatter(), bar.getProgressCharacter())
-          display += bar.getProgressCharacter() + bar.getEmptyBarCharacter().repeat(emptyBars)
+            lengthWithoutDecoration(
+              output.getFormatter(),
+              bar.getProgressCharacter()
+            )
+          display +=
+            bar.getProgressCharacter() +
+            bar.getEmptyBarCharacter().repeat(emptyBars)
         }
         return display
       },
-      elapsed (bar) {
+      elapsed(bar) {
         return formatTime(time() - bar.getStartTime())
       },
-      remaining (bar) {
+      remaining(bar) {
         if (!bar.getMaxSteps()) {
-          throw new Error('Unable to display the remaining time if the maximum number of steps is not set.')
+          throw new Error(
+            'Unable to display the remaining time if the maximum number of steps is not set.'
+          )
         }
 
         let remaining
@@ -272,36 +287,45 @@ export default class ProgressBar {
           remaining = 0
         } else {
           remaining = Math.round(
-            (time() - bar.getStartTime()) /
-            bar.getProgress() *
-            (bar.getMaxSteps() - bar.getProgress())
+            ((time() - bar.getStartTime()) / bar.getProgress()) *
+              (bar.getMaxSteps() - bar.getProgress())
           )
         }
         return formatTime(remaining)
       },
-      estimated (bar) {
+      estimated(bar) {
         if (!bar.getMaxSteps()) {
-          throw new Error('Unable to display the estimated time if the maximum number of steps is not set.')
+          throw new Error(
+            'Unable to display the estimated time if the maximum number of steps is not set.'
+          )
         }
 
         let estimated
         if (!bar.getProgress()) {
           estimated = 0
         } else {
-          estimated = Math.round((time() - bar.getStartTime()) / bar.getProgress() * bar.getMaxSteps())
+          estimated = Math.round(
+            ((time() - bar.getStartTime()) / bar.getProgress()) *
+              bar.getMaxSteps()
+          )
         }
         return formatTime(estimated)
       },
-      memory (bar) {
+      memory(bar) {
         return formatMemory(process.memoryUsage().heapTotal)
       },
-      current (bar) {
-        return strPad(String(bar.getProgress()), bar.getStepWidth(), ' ', 'STR_PAD_LEFT')
+      current(bar) {
+        return strPad(
+          String(bar.getProgress()),
+          bar.getStepWidth(),
+          ' ',
+          'STR_PAD_LEFT'
+        )
       },
-      max (bar) {
+      max(bar) {
         return String(bar.getMaxSteps())
       },
-      percent (bar) {
+      percent(bar) {
         return String(Math.floor(bar.getProgressPercent() * 100))
       }
     }
@@ -317,65 +341,65 @@ export default class ProgressBar {
    * @param message The text to associate with the placeholder
    * @param name    The name of the placeholder
    */
-  public setMessage (message: string, name: string = 'message') {
+  public setMessage(message: string, name: string = 'message') {
     this.messages[name] = message
   }
 
   /**
    * Gets the message associated with a certain placeholder.
-   * 
+   *
    * @param name A format placeholder
    */
-  public getMessage (name: string = 'message') {
+  public getMessage(name: string = 'message') {
     return this.messages[name]
   }
 
   /**
    * Gets the progress bar start time.
    */
-  public getStartTime () {
+  public getStartTime() {
     return this.startTime
   }
 
   /**
    * Gets the progress bar maximal steps.
    */
-  public getMaxSteps () {
+  public getMaxSteps() {
     return this.max
   }
 
   /**
    * Gets the current step position.
    */
-  public getProgress () {
+  public getProgress() {
     return this.step
   }
 
   /**
    * Gets the progress bar step width.
    */
-  public getStepWidth () {
+  public getStepWidth() {
     return this.stepWidth
   }
 
   /**
    * Gets the current progress bar percent.
    */
-  public getProgressPercent () {
+  public getProgressPercent() {
     return this.percent
   }
 
   /**
    * Sets the progress bar width.
    */
-  public setBarWidth (size: number) {
+  public setBarWidth(size: number) {
     this.barWidth = Math.max(1, size)
   }
 
   /**
    * Gets the progress bar width in characters.
    */
-  public getBarWidth () {
+  public getBarWidth() {
     return this.barWidth
   }
 
@@ -384,14 +408,14 @@ export default class ProgressBar {
    *
    * @param char A character
    */
-  public setBarCharacter (char: string) {
+  public setBarCharacter(char: string) {
     this.barChar = char
   }
 
   /**
    * Gets the bar character.
    */
-  public getBarCharacter () {
+  public getBarCharacter() {
     if (null == this.barChar) {
       return this.max ? '=' : this.emptyBarChar
     }
@@ -403,14 +427,14 @@ export default class ProgressBar {
    *
    * @param char A character
    */
-  public setEmptyBarCharacter (char: string) {
+  public setEmptyBarCharacter(char: string) {
     this.emptyBarChar = char
   }
 
   /**
    * Gets the empty bar character.
    */
-  public getEmptyBarCharacter () {
+  public getEmptyBarCharacter() {
     return this.emptyBarChar
   }
 
@@ -419,14 +443,14 @@ export default class ProgressBar {
    *
    * @param char A character
    */
-  public setProgressCharacter (char: string) {
+  public setProgressCharacter(char: string) {
     this.progressChar = char
   }
 
   /**
    * Gets the progress bar character.
    */
-  public getProgressCharacter () {
+  public getProgressCharacter() {
     return this.progressChar
   }
 
@@ -435,7 +459,7 @@ export default class ProgressBar {
    *
    * @param format The format
    */
-  public setFormat (format: string) {
+  public setFormat(format: string) {
     this.format = null
     this.internalFormat = format
   }
@@ -445,7 +469,7 @@ export default class ProgressBar {
    *
    * @param freq The frequency in steps
    */
-  public setRedrawFrequency (freq: number) {
+  public setRedrawFrequency(freq: number) {
     this.redrawFreq = Math.max(freq, 1)
   }
 
@@ -454,7 +478,7 @@ export default class ProgressBar {
    *
    * @param max Number of steps to complete the bar (`0` if indeterminate), `null` to leave unchanged
    */
-  public start (max: number = null) {
+  public start(max: number = null) {
     this.startTime = time()
     this.step = 0
     this.percent = 0.0
@@ -469,7 +493,7 @@ export default class ProgressBar {
    *
    * @param step Number of steps to advance
    */
-  public advance (step: number = 1) {
+  public advance(step: number = 1) {
     this.setProgress(this.step + step)
   }
 
@@ -478,7 +502,7 @@ export default class ProgressBar {
    *
    * @param overwrite Whether the progress bar should be overwritten
    */
-  public setOverwrite (overwrite: boolean) {
+  public setOverwrite(overwrite: boolean) {
     this.shouldOverwrite = overwrite
   }
 
@@ -487,7 +511,7 @@ export default class ProgressBar {
    *
    * @param step The current progress
    */
-  public setProgress (step: number) {
+  public setProgress(step: number) {
     if (this.max && step > this.max) {
       this.max = step
     } else if (step < 0) {
@@ -505,21 +529,21 @@ export default class ProgressBar {
   /**
    * Finishes the progress output.
    */
-  public finish () {
+  public finish() {
     if (!this.max) {
       this.max = this.step
     }
     if (this.step === this.max && !this.shouldOverwrite) {
-         // prevent double 100% output
-         return
-     }
-     this.setProgress(this.max)
+      // prevent double 100% output
+      return
+    }
+    this.setProgress(this.max)
   }
 
   /**
    * Outputs the current progress string.
    */
-  public display () {
+  public display() {
     if (VERBOSITY_QUIET === this.output.getVerbosity()) {
       return
     }
@@ -535,7 +559,7 @@ export default class ProgressBar {
    * This is useful if you wish to write some output while a progress bar is running.
    * Call display() to show the progress bar again.
    */
-  public clear () {
+  public clear() {
     if (!this.shouldOverwrite) {
       return
     }
@@ -550,9 +574,12 @@ export default class ProgressBar {
    *
    * @param format The format template
    */
-  private setRealFormat (format: string) {
+  private setRealFormat(format: string) {
     // try to use the _nomax variant if available
-    if (!this.max && null != ProgressBar.getFormatDefinition(format + '_nomax')) {
+    if (
+      !this.max &&
+      null != ProgressBar.getFormatDefinition(format + '_nomax')
+    ) {
       this.format = ProgressBar.getFormatDefinition(format + '_nomax')
     } else if (null != ProgressBar.getFormatDefinition(format)) {
       this.format = ProgressBar.getFormatDefinition(format)
@@ -567,7 +594,7 @@ export default class ProgressBar {
    *
    * @param max The progress bar max steps
    */
-  private setMaxSteps (max: number) {
+  private setMaxSteps(max: number) {
     this.max = Math.max(0, max)
     this.stepWidth = this.max ? String(this.max).length : 4
   }
@@ -577,7 +604,7 @@ export default class ProgressBar {
    *
    * @param message The message
    */
-  private overwrite (message: string) {
+  private overwrite(message: string) {
     if (this.shouldOverwrite) {
       if (!this.firstRun) {
         // Move the cursor to the beginning of the line
@@ -599,7 +626,7 @@ export default class ProgressBar {
   /**
    * Determines the fitting format template for the currently set verbosity.
    */
-  private determineBestFormat () {
+  private determineBestFormat() {
     switch (this.output.getVerbosity()) {
       // VERBOSITY_QUIET: display is disabled anyway
       case VERBOSITY_VERBOSE:
@@ -615,17 +642,19 @@ export default class ProgressBar {
 
   /**
    * Renders the current state of the progress bar.
-   * 
+   *
    * @return The output of the progress bar's current state
    */
-  private buildLine () {
+  private buildLine() {
     const regex = /%([a-z\-_]+)(||\:([^%]+))?%/gi
     const callback = (...args: any[]) => {
       const str: string = args.pop()
       const offset: number = args.pop()
       const matches: string[] = args
 
-      const formatter = ProgressBar.getPlaceholderFormatterDefinition(matches[1])
+      const formatter = ProgressBar.getPlaceholderFormatterDefinition(
+        matches[1]
+      )
       let text
       if (formatter) {
         text = formatter(this, this.output)

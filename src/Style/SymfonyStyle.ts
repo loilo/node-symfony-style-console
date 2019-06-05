@@ -1,8 +1,17 @@
 import { EOL, DIRECTORY_SEPARATOR } from '../env'
-import { countOccurences, lengthWithoutDecoration, wordwrap, flipObject, StringHash } from '../Helper/Helper'
+import {
+  countOccurences,
+  lengthWithoutDecoration,
+  wordwrap,
+  flipObject,
+  StringHash
+} from '../Helper/Helper'
 
 import InputInterface from '../Input/InputInterface'
-import OutputInterface, { OutputOptions, OUTPUT_NORMAL } from '../Output/OutputInterface'
+import OutputInterface, {
+  OutputOptions,
+  OUTPUT_NORMAL
+} from '../Output/OutputInterface'
 import Output from '../Output/Output'
 
 import ConsoleInput from '../Input/ConsoleInput'
@@ -27,13 +36,23 @@ export default class SymfonyStyle extends OutputStyle {
   private bufferedOutput: BufferedOutput
   private questionnaire: Questionnaire
 
-  public constructor (input: InputInterface = new ConsoleInput(), output: OutputInterface = new ConsoleOutput()) {
+  public constructor(
+    input: InputInterface = new ConsoleInput(),
+    output: OutputInterface = new ConsoleOutput()
+  ) {
     super(output)
 
     this.input = input
-    this.bufferedOutput = new BufferedOutput(output.getVerbosity(), false, output.getFormatter().clone())
+    this.bufferedOutput = new BufferedOutput(
+      output.getVerbosity(),
+      false,
+      output.getFormatter().clone()
+    )
 
-    const width = (SymfonyStyle.LINE_LENGTH || (<any>process.stdout).columns) || SymfonyStyle.MAX_LINE_LENGTH
+    const width =
+      SymfonyStyle.LINE_LENGTH ||
+      (<any>process.stdout).columns ||
+      SymfonyStyle.MAX_LINE_LENGTH
     this.lineLength = Math.min(
       width - Number(DIRECTORY_SEPARATOR === '\\'),
       SymfonyStyle.MAX_LINE_LENGTH
@@ -50,8 +69,8 @@ export default class SymfonyStyle extends OutputStyle {
    * @param padding  Whether to add vertical padding
    * @param escape   Whether to escape the messages
    */
-  public block (
-    messages: string|string[],
+  public block(
+    messages: string | string[],
     type: string,
     style: string,
     prefix: string = ' ',
@@ -67,24 +86,13 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public title (message: string) {
+  public title(message: string) {
     this.autoPrependBlock()
     this.writeln([
       `<comment>${OutputFormatter.escapeTrailingBackslash(message)}</>`,
-      `<comment>${'='.repeat(lengthWithoutDecoration(this.getFormatter(), message))}</>`
-    ])
-    this.newLine()
-  }
-
-
-  /**
-   * {@inheritdoc}
-   */
-  public section (message: string) {
-    this.autoPrependBlock()
-    this.writeln([
-      `<comment>${OutputFormatter.escapeTrailingBackslash(message)}</>`,
-      `<comment>${'-'.repeat(lengthWithoutDecoration(this.getFormatter(), message))}</>`
+      `<comment>${'='.repeat(
+        lengthWithoutDecoration(this.getFormatter(), message)
+      )}</>`
     ])
     this.newLine()
   }
@@ -92,7 +100,21 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public listing (elements: string[]) {
+  public section(message: string) {
+    this.autoPrependBlock()
+    this.writeln([
+      `<comment>${OutputFormatter.escapeTrailingBackslash(message)}</>`,
+      `<comment>${'-'.repeat(
+        lengthWithoutDecoration(this.getFormatter(), message)
+      )}</>`
+    ])
+    this.newLine()
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public listing(elements: string[]) {
     this.autoPrependText()
     elements = elements.map(element => ` * ${element}`)
 
@@ -103,7 +125,7 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public text (message: string|string[]) {
+  public text(message: string | string[]) {
     this.autoPrependText()
 
     const messages = Array.isArray(message) ? message.slice(0) : [message]
@@ -118,54 +140,58 @@ export default class SymfonyStyle extends OutputStyle {
    *
    * @param message
    */
-  public comment (message: string|string[]) {
-      const messages = Array.isArray(message) ? message.slice(0) : [message]
+  public comment(message: string | string[]) {
+    const messages = Array.isArray(message) ? message.slice(0) : [message]
 
-      this.autoPrependBlock()
-      this.writeln(this.createBlock(messages, null, null, '<fg=default;bg=default> // </>'))
-      this.newLine()
+    this.autoPrependBlock()
+    this.writeln(
+      this.createBlock(messages, null, null, '<fg=default;bg=default> // </>')
+    )
+    this.newLine()
   }
-
 
   /**
    * {@inheritdoc}
    */
-  public success (message: string|string[]) {
+  public success(message: string | string[]) {
     this.block(message, 'OK', 'fg=black;bg=green', ' ', true)
   }
 
   /**
    * {@inheritdoc}
    */
-  public error (message: string|string[]) {
+  public error(message: string | string[]) {
     this.block(message, 'ERROR', 'fg=white;bg=red', ' ', true)
   }
 
   /**
    * {@inheritdoc}
    */
-  public warning (message: string|string[]) {
+  public warning(message: string | string[]) {
     this.block(message, 'WARNING', 'fg=white;bg=red', ' ', true)
   }
 
   /**
    * {@inheritdoc}
    */
-  public note (message: string|string[]) {
+  public note(message: string | string[]) {
     this.block(message, 'NOTE', 'fg=yellow', ' ! ')
   }
 
   /**
    * {@inheritdoc}
    */
-  public caution (message: string|string[]) {
+  public caution(message: string | string[]) {
     this.block(message, 'CAUTION', 'fg=white;bg=red', ' ! ', true)
   }
 
   /**
    * {@inheritdoc}
    */
-  public table (headers: TableCellInput[] | TableCellInput[][], rows: TableRowInput[]) {
+  public table(
+    headers: TableCellInput[] | TableCellInput[][],
+    rows: TableRowInput[]
+  ) {
     const style = Table.getStyleDefinition('symfony-style-guide').clone()
     style.setCellHeaderFormat('<info>%s</info>')
 
@@ -181,7 +207,11 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public ask (question: string, defaultAnswer: string = null, validator: AnswerValidator = null) {
+  public ask(
+    question: string,
+    defaultAnswer: string = null,
+    validator: AnswerValidator = null
+  ) {
     if (!this.input.isInteractive()) return Promise.resolve(null)
 
     this.initQuestionnaire()
@@ -191,7 +221,10 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public askHidden (question: string, validator: AnswerValidator = null): Promise<string> {
+  public askHidden(
+    question: string,
+    validator: AnswerValidator = null
+  ): Promise<string> {
     if (!this.input.isInteractive()) return Promise.resolve(null)
 
     this.initQuestionnaire()
@@ -201,7 +234,10 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public confirm (question: string, defaultAnswer: boolean = true): Promise<boolean> {
+  public confirm(
+    question: string,
+    defaultAnswer: boolean = true
+  ): Promise<boolean> {
     if (!this.input.isInteractive()) return Promise.resolve(null)
 
     this.initQuestionnaire()
@@ -211,7 +247,11 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public choice (question: string, choices: StringHash, defaultAnswer: string = null): Promise<string> {
+  public choice(
+    question: string,
+    choices: StringHash,
+    defaultAnswer: string = null
+  ): Promise<string> {
     if (!this.input.isInteractive()) return Promise.resolve(null)
 
     this.initQuestionnaire()
@@ -221,7 +261,7 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public progressStart (max: number = 0) {
+  public progressStart(max: number = 0) {
     this.progressBar = this.createProgressBar(max)
     this.progressBar.start()
   }
@@ -229,21 +269,21 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public progressAdvance (step: number = 1) {
+  public progressAdvance(step: number = 1) {
     this.getProgressBar().advance(step)
   }
 
   /**
    * {@inheritdoc}
    */
-  public progressSet (step: number) {
+  public progressSet(step: number) {
     this.getProgressBar().setProgress(step)
   }
 
   /**
    * {@inheritdoc}
    */
-  public progressFinish () {
+  public progressFinish() {
     this.getProgressBar().finish()
     this.newLine(2)
     this.progressBar = null
@@ -252,22 +292,25 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  protected createProgressBar (max = 0) {
-      const progressBar = super.createProgressBar(max)
+  protected createProgressBar(max = 0) {
+    const progressBar = super.createProgressBar(max)
 
-      if ('\\' !== DIRECTORY_SEPARATOR) {
-        progressBar.setEmptyBarCharacter('░') // light shade character \u2591
-        progressBar.setProgressCharacter('')
-        progressBar.setBarCharacter('▓') // dark shade character \u2593
-      }
+    if ('\\' !== DIRECTORY_SEPARATOR) {
+      progressBar.setEmptyBarCharacter('░') // light shade character \u2591
+      progressBar.setProgressCharacter('')
+      progressBar.setBarCharacter('▓') // dark shade character \u2593
+    }
 
-      return progressBar
+    return progressBar
   }
 
   /**
    * {@inheritdoc}
    */
-  public writeln (messages: string|string[], type: OutputOptions = OUTPUT_NORMAL) {
+  public writeln(
+    messages: string | string[],
+    type: OutputOptions = OUTPUT_NORMAL
+  ) {
     super.writeln(messages, type)
     this.bufferedOutput.writeln(this.reduceBuffer(messages), type)
   }
@@ -275,7 +318,11 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public write (messages: string|string[], newline: boolean = false, type: OutputOptions = OUTPUT_NORMAL) {
+  public write(
+    messages: string | string[],
+    newline: boolean = false,
+    type: OutputOptions = OUTPUT_NORMAL
+  ) {
     super.write(messages, newline, type)
     this.bufferedOutput.write(this.reduceBuffer(messages), newline, type)
   }
@@ -283,7 +330,7 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * {@inheritdoc}
    */
-  public newLine (count = 1) {
+  public newLine(count = 1) {
     super.newLine(count)
     this.bufferedOutput.write('\n'.repeat(count))
   }
@@ -291,16 +338,17 @@ export default class SymfonyStyle extends OutputStyle {
   /**
    * @return ProgressBar
    */
-  protected getProgressBar () {
+  protected getProgressBar() {
     if (!this.progressBar) {
       throw new Error('The ProgressBar is not started.')
     }
 
-    return this.progressBar;
+    return this.progressBar
   }
 
-  protected autoPrependBlock () {
-    const chars = this.bufferedOutput.fetch()
+  protected autoPrependBlock() {
+    const chars = this.bufferedOutput
+      .fetch()
       .replace(new RegExp(EOL, 'g'), '\n')
       .slice(-2)
 
@@ -312,7 +360,7 @@ export default class SymfonyStyle extends OutputStyle {
     this.newLine(2 - (countOccurences(chars, '\n') || 0))
   }
 
-  protected autoPrependText () {
+  protected autoPrependText() {
     const fetched = this.bufferedOutput.fetch()
 
     // Prepend new line if last char isn't EOL:
@@ -321,17 +369,17 @@ export default class SymfonyStyle extends OutputStyle {
     }
   }
 
-  protected reduceBuffer (messages: string|string[]) {
-    if (!Array.isArray(messages)) messages = [ messages ]
+  protected reduceBuffer(messages: string | string[]) {
+    if (!Array.isArray(messages)) messages = [messages]
 
     // We need to know if the two last chars are EOL
     // Preserve the last 4 chars inserted (EOL on windows is two chars) in the history buffer
-    return [ this.bufferedOutput.fetch() ]
+    return [this.bufferedOutput.fetch()]
       .concat(messages)
       .map(value => value.slice(-4))
   }
 
-  protected createBlock (
+  protected createBlock(
     messages: string[],
     type: string = null,
     style: string = null,
@@ -357,7 +405,13 @@ export default class SymfonyStyle extends OutputStyle {
         message = OutputFormatter.escape(message)
       }
 
-      lines.push(...wordwrap(message, this.lineLength - prefixLength - indentLength, EOL).split(EOL))
+      lines.push(
+        ...wordwrap(
+          message,
+          this.lineLength - prefixLength - indentLength,
+          EOL
+        ).split(EOL)
+      )
 
       if (messages.length > 1 && key < messages.length - 1) {
         lines.push('')
@@ -375,13 +429,13 @@ export default class SymfonyStyle extends OutputStyle {
       let line = lines[i]
 
       if (null !== type) {
-        line = firstLineIndex === i
-          ? type + line
-          : lineIndetation + line
+        line = firstLineIndex === i ? type + line : lineIndetation + line
       }
 
       line = prefix + line
-      line += ' '.repeat(this.lineLength - lengthWithoutDecoration(this.getFormatter(), line))
+      line += ' '.repeat(
+        this.lineLength - lengthWithoutDecoration(this.getFormatter(), line)
+      )
 
       if (style) {
         line = `<${style}>${line}</>`
@@ -393,7 +447,7 @@ export default class SymfonyStyle extends OutputStyle {
     return lines
   }
 
-  protected initQuestionnaire () {
+  protected initQuestionnaire() {
     if (!this.questionnaire) {
       this.questionnaire = new Questionnaire(this)
     }

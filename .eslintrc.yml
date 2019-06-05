@@ -1,0 +1,5 @@
+parser: '@typescript-eslint/parser'
+plugins: [ '@typescript-eslint' ]
+extends: [ plugin:prettier/recommended ]
+parserOptions:
+  sourceType: module

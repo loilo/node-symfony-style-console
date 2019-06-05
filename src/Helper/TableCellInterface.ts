@@ -12,7 +12,7 @@ export type TableRowInput = TableCellInput[] | TableSeparator
 
 /**
  * Interface for Table cells.
- *  
+ *
  * @author Florian Reuschel <florian@loilo.de>
  */
 export interface TableCellInterface {
@@ -21,14 +21,14 @@ export interface TableCellInterface {
    *
    * @return colspan
    */
-  getColspan (): number
+  getColspan(): number
 
   /**
    * Gets number of rowspan.
    *
    * @return rowspan
    */
-  getRowspan (): number
+  getRowspan(): number
 }
 
 export default TableCellInterface

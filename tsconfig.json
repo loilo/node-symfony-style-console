@@ -5,13 +5,14 @@
         "lib": [ "es2015", "es2016", "dom" ],
         "noImplicitAny": true,
         "sourceMap": false,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "skipLibCheck": true
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-        "src/node_modules",
+        "node_modules",
         "**/*.spec.ts"
     ]
 }
