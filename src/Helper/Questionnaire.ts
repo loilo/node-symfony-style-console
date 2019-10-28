@@ -79,7 +79,7 @@ export default class Questionnaire {
       case '\r':
       case '\u0004':
         process.stdin.pause()
-        process.stdin.removeListener('data', this.suppressStdinOutput)
+        process.stdin.removeListener('data', Questionnaire.suppressStdinOutput)
         break
 
       default:
