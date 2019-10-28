@@ -1,7 +1,5 @@
 # symfony-style-console
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Loilo/node-symfony-style-console.svg)](https://greenkeeper.io/)
-
 Use the style and utilities of the [Symfony Console](https://symfony.com/doc/current/console/style.html) in Node.js.
 
 ![Example of Symfony Style console output](symf-opener.png)
