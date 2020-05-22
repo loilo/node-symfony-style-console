@@ -1,17 +1,13 @@
 import { EOL } from '../env'
 import { StringHash } from '../Helper/Helper'
 import ConsoleOutput from '../Output/ConsoleOutput'
-import ConsoleOutputInterface from '../Output/ConsoleOutputInterface'
-import Output, { OUTPUT_NORMAL } from '../Output/OutputInterface'
+import { OUTPUT_NORMAL } from '../Output/OutputInterface'
 import OutputInterface, {
   VERBOSITY_LEVEL,
   OutputOptions
 } from '../Output/OutputInterface'
 import OutputFormatterInterface from '../Formatter/OutputFormatterInterface'
-import TableCellInterface, {
-  TableCellInput,
-  TableRowInput
-} from '../Helper/TableCellInterface'
+import { TableCellInput, TableRowInput } from '../Helper/TableCellInterface'
 
 import StyleInterface from './StyleInterface'
 

@@ -76,7 +76,7 @@ export function sprintf(format: string, ...args: any[]) {
   const a = args.map(arg => String(arg))
   let i = 0
 
-  let _pad = function(
+  let _pad = function (
     str: string,
     len: number,
     chr = ' ',
@@ -87,7 +87,7 @@ export function sprintf(format: string, ...args: any[]) {
     return leftJustify ? str + padding : padding + str
   }
 
-  let justify = function(
+  let justify = function (
     value: string,
     prefix: string,
     leftJustify: boolean,
@@ -119,7 +119,7 @@ export function sprintf(format: string, ...args: any[]) {
     '16': '0x'
   }
 
-  let _formatBaseX = function(
+  let _formatBaseX = function (
     value: string | number,
     base: AvailableBases,
     prefix: string | boolean,
@@ -138,7 +138,7 @@ export function sprintf(format: string, ...args: any[]) {
   }
 
   // _formatString()
-  let _formatString = function(
+  let _formatString = function (
     value: string,
     leftJustify: boolean,
     minWidth: number,
@@ -154,7 +154,7 @@ export function sprintf(format: string, ...args: any[]) {
 
   // doFormat()
   // RegEx replacer
-  let doFormat = function(
+  let doFormat = function (
     substring: string,
     valueIndex: number,
     flags: string,
@@ -496,7 +496,7 @@ export function strPad(
 ) {
   let half = ''
   let padToGo
-  let _strPadRepeater = function(s: string, len: number) {
+  let _strPadRepeater = function (s: string, len: number) {
     let collect = ''
     while (collect.length < len) {
       collect += s
@@ -615,7 +615,7 @@ export function stripTags(input: string, allowed: string = ''): string {
   ).join('')
   let tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi
   let comments = /<!--[\s\S]*?-->/gi
-  return input.replace(comments, '').replace(tags, function($0, $1) {
+  return input.replace(comments, '').replace(tags, function ($0, $1) {
     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : ''
   })
 }

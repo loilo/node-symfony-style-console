@@ -7,6 +7,12 @@
     "test": "test",
     "src": "src"
   },
+  "files": [
+    "dist",
+    "modern",
+    "symf-example.png",
+    "symf-opener.png"
+  ],
   "scripts": {
     "build": "tsc --declaration",
     "build-modern": "tsc --declaration --target ES2015 --module ES6 --outDir modern",
@@ -15,22 +21,22 @@
     "prepublishOnly": "npm test && npm run build-modern"
   },
   "devDependencies": {
-    "@types/node": "^12.0.4",
-    "@typescript-eslint/eslint-plugin": "^2.5.0",
-    "@typescript-eslint/parser": "^2.5.0",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.5.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "jest": "^24.9.0",
-    "prettier": "^1.17.1",
-    "typescript": "^3.6.4"
+    "@types/node": "^14.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.3"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Loilo/node-symfony-style-console.git"
+    "url": "git+https://github.com/loilo/node-symfony-style-console.git"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">= 10.0.0"
   },
   "keywords": [
     "symfony",
@@ -40,7 +46,7 @@
   "author": "Florian Reuschel <florian@loilo.de>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Loilo/node-symfony-style-console/issues"
+    "url": "https://github.com/loilo/node-symfony-style-console/issues"
   },
-  "homepage": "https://github.com/Loilo/node-symfony-style-console#readme"
+  "homepage": "https://github.com/loilo/node-symfony-style-console#readme"
 }

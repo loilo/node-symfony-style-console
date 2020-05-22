@@ -1,4 +1,3 @@
-import { EOL, DIRECTORY_SEPARATOR } from '../env'
 import OutputInterface, {
   VERBOSITY_LEVEL,
   VERBOSITY_NORMAL

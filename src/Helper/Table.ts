@@ -15,10 +15,7 @@ import OutputInterface from '../Output/OutputInterface'
 
 import TableCell from './TableCell'
 import TableSeparator from './TableSeparator'
-import TableCellInterface, {
-  TableCellInput,
-  TableRowInput
-} from './TableCellInterface'
+import { TableCellInput, TableRowInput } from './TableCellInterface'
 import TableStyle from './TableStyle'
 
 export interface TableStyleHash {

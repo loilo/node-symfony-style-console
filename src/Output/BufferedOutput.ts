@@ -1,5 +1,4 @@
-import { EOL, DIRECTORY_SEPARATOR } from '../env'
-import { VERBOSITY_NORMAL } from './OutputInterface'
+import { EOL } from '../env'
 import Output from './Output'
 
 /**
