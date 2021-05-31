@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`09 Ensure that all lines are aligned to the begin of the first line in a multi-line block 1`] = `
-"
-X [CUSTOM] Custom block                                                         
+"X [CUSTOM] Custom block                                                         
 X                                                                               
-X          Second custom block line                                             
-
-"
+X          Second custom block line"
 `;

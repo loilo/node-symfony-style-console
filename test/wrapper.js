@@ -24,5 +24,5 @@ module.exports = test => () => {
 	io.setDecorated(false)
 	test(io)
 
-	expect(output.stream.result.replace(/\r\n/g, '\n')).toMatchSnapshot()
+	expect(output.stream.result.replace(/\r\n/g, '\n').trim()).toMatchSnapshot()
 }

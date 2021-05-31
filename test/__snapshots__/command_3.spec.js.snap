@@ -1,12 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`03 Ensure has single blank line between two titles 1`] = `
-"
-First title
+"First title
 ===========
 
 Second title
-============
-
-"
+============"
 `;

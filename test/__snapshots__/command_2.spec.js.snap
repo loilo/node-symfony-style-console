@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`02 Ensure has single blank line between blocks 1`] = `
-"
- [WARNING] Warning                                                              
+"[WARNING] Warning                                                              
 
  ! [CAUTION] Caution                                                            
 
@@ -12,7 +11,5 @@ exports[`02 Ensure has single blank line between blocks 1`] = `
 
  ! [NOTE] Note                                                                  
 
-X [CUSTOM] Custom block                                                         
-
-"
+X [CUSTOM] Custom block"
 `;

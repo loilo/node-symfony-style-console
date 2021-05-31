@@ -1,14 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`13 Ensure that nested tags have no effect on the color of the '//' prefix 1`] = `
-"
-[39;49m // [39;49mLorem ipsum dolor sit [33mamet, consectetur adipisicing elit, sed do            [39m
+"[39;49m // [39;49mLorem ipsum dolor sit [33mamet, consectetur adipisicing elit, sed do            [39m
 [39;49m // [39;49m[33meiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim[39m
 [39;49m // [39;49m[33mveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea     [39m
 [39;49m // [39;49m[33mcommodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit[39m
 [39;49m // [39;49m[33messe cillum dolore eu fugiat nulla pariatur.[39m Excepteur sint                 
 [39;49m // [39;49moccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit  
-[39;49m // [39;49manim id est laborum                                                         
-
-"
+[39;49m // [39;49manim id est laborum"
 `;

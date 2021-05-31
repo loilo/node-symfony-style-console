@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`16 Ensure that block() output is properly formatted (even padding lines) 1`] = `
-"
-[30;42m                                                                                [39;49m
+"[30;42m                                                                                [39;49m
 [30;42m [OK] Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  [39;49m
 [30;42m      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim      [39;49m
 [30;42m      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea   [39;49m
@@ -10,7 +9,5 @@ exports[`16 Ensure that block() output is properly formatted (even padding lines
 [30;42m      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat[39;49m
 [30;42m      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id [39;49m
 [30;42m      est laborum                                                               [39;49m
-[30;42m                                                                                [39;49m
-
-"
+[30;42m                                                                                [39;49m"
 `;
