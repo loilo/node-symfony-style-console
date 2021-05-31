@@ -72,7 +72,8 @@ export function range(from: number, to: number): number[] {
  * @param args   The values to merge into the template
  */
 export function sprintf(format: string, ...args: any[]) {
-  let regex = /%%|%(\d+\$)?([-+'#0 ]*)(\*\d+\$|\*|\d+)?(?:\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g
+  let regex =
+    /%%|%(\d+\$)?([-+'#0 ]*)(\*\d+\$|\*|\d+)?(?:\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g
   const a = args.map(arg => String(arg))
   let i = 0
 

@@ -59,7 +59,8 @@ export type StyleSet = StyleColorSet | StyleOptionsSet
  *
  */
 export default class OutputFormatterStyle
-  implements OutputFormatterStyleInterface {
+  implements OutputFormatterStyleInterface
+{
   /**
    * The ANSI escape sequences for available foreground colors.
    */
