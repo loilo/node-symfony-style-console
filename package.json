@@ -21,7 +21,7 @@
     "prepublishOnly": "npm test && npm run build-modern"
   },
   "devDependencies": {
-    "@types/node": "^15.0.2",
+    "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.9.1",
     "eslint": "^7.0.0",
